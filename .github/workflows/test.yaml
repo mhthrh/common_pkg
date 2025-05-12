@@ -16,6 +16,11 @@ jobs:
         with:
           go-version: '1.4'
 
+      - name: Install vet tool
+        run: |
+          go install golang.org/x/tools/cmd/vet@latest
+          echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
+
       - name: check code
         run: go vet ./...
 
