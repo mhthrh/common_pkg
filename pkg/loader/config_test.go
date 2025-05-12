@@ -3,11 +3,12 @@ package config_test
 import (
 	"github.com/mhthrh/common_pkg/pkg/loader"
 	"github.com/mhthrh/common_pkg/pkg/xErrors"
+	"log"
 	"testing"
 )
 
 const (
-	path   = "src/rest/config/file"
+	path   = "src/common_pkg/config/file"
 	secret = "kiripiri"
 )
 
@@ -26,7 +27,7 @@ type test struct {
 func init() {
 	cnfg, err = config.New("", path, "", "", secret, true)
 	if err != nil {
-		//	log.Fatalf("failed to initialize configuration")
+		log.Fatalf("failed to initialize configuration")
 	}
 
 }

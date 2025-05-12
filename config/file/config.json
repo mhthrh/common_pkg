@@ -1,0 +1,40 @@
+{
+  "appName": "rest_service",
+  "isTest": true,
+  "version": "1.0.0",
+  "expireDate": "2026-01-01",
+  "secrets": [
+    {
+      "name": "login_secret",
+      "secretKey": "~~$eCret^&*KEY~~",
+    },
+    {
+      "name": "app_secret",
+      "secretKey": "~~KoLoFt^&*KEY~~",
+    }
+  ],
+  "postgresql": {
+    "host": "localhost",
+    "port": 5432,
+    "user": "admin_role",
+    "password": "S3ring@123",
+    "databaseName": "my_app_db",
+    "schema": "schema1",
+    "sslEnabled": "false"
+  },
+  "mongo": {
+    "host": "localhost",
+    "port": 27017
+  },
+  "admin": {
+    "user": "admin",
+    "pass": "S3ring@123"
+  },
+  "server": {
+    "host": "0.0.0.0",
+    "port": 8585,
+    "readTimeOut": 60,
+    "writeTimeOut": 60,
+    "idleTimeOut": 180
+  }
+}
