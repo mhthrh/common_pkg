@@ -20,7 +20,10 @@ type File struct {
 	name string
 }
 
-func New(path, name string) file.IFile {
+func New(path, name string, isFullPath bool) file.IFile {
+	if isFullPath {
+		appPath = ""
+	}
 	return &File{
 		path: path,
 		name: name,
