@@ -1,6 +1,8 @@
 package text
 
 import (
+	"errors"
+	"fmt"
 	env "github.com/mhthrh/common_pkg/util/environment"
 	"github.com/mhthrh/common_pkg/util/file"
 	"os"
@@ -24,6 +26,9 @@ func New(path, name string, isFullPath bool) file.IFile {
 	if isFullPath {
 		appPath = ""
 	}
+	if path == "" {
+		name, _ = filepath.Abs(name)
+	}
 	return &File{
 		path: path,
 		name: name,
@@ -38,6 +43,9 @@ func (f *File) Read() ([]byte, error) {
 }
 
 func (f *File) Write(bytes []byte) error {
-	//TODO implement me
-	panic("implement me")
+	err := os.WriteFile(filepath.Join(appPath, f.path, f.name), bytes, 0644)
+	if err != nil {
+		return errors.New(fmt.Sprint("Error writing file:", err))
+	}
+	return nil
 }

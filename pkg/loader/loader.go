@@ -54,7 +54,7 @@ func (l Local) Read() *xErrors.Error {
 		return nil
 	}
 	if !isEncrypted {
-		txt := text.New(l.path, fmt.Sprintf(file, "json"))
+		txt := text.New(l.path, fmt.Sprintf(file, "json"), false)
 		byts, err := txt.Read()
 		if err != nil {
 			log.Fatalf("read file failed: %v", err)
@@ -69,7 +69,7 @@ func (l Local) Read() *xErrors.Error {
 	if err != nil {
 		log.Fatalf("crypto failed: %v", err)
 	}
-	f := text.New(l.path, fmt.Sprintf(file, "enc"))
+	f := text.New(l.path, fmt.Sprintf(file, "enc"), false)
 	byts, err := f.Read()
 	if err != nil {
 		log.Fatalf("read file failed: %v", err)
