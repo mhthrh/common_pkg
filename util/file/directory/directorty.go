@@ -32,7 +32,7 @@ func Exist(path string) bool {
 }
 
 func GetFileName(path string) ([]string, error) {
-	if Exist(path) {
+	if !Exist(path) {
 		return nil, errors.New("not exist")
 	}
 	filename := filepath.Base(path)
