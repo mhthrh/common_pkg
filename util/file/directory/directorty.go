@@ -7,6 +7,13 @@ import (
 	"strings"
 )
 
+type FileInfo struct {
+	FullName string
+	EXT      string
+	Name     string
+	Dir      string
+}
+
 func Create(path string) error {
 	if Exist(path) {
 		return errors.New("path already exist")
@@ -31,11 +38,17 @@ func Exist(path string) bool {
 	}
 }
 
-func GetFileName(path string) ([]string, error) {
+func GetFileName(path string) (FileInfo, error) {
 	if !Exist(path) {
-		return nil, errors.New("not exist")
+		return FileInfo{}, errors.New("not exist")
 	}
 	filename := filepath.Base(path)
 	ext := filepath.Ext(filename)
-	return []string{filename, ext, strings.TrimSuffix(filename, ext)}, nil
+	return FileInfo{
+		FullName: filename,
+		EXT:      ext,
+		Name:     strings.TrimSuffix(filename, ext),
+		Dir:      filepath.Dir(path),
+	}, nil
+
 }
