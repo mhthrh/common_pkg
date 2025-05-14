@@ -3,6 +3,8 @@ package directory
 import (
 	"errors"
 	"os"
+	"path/filepath"
+	"strings"
 )
 
 func Create(path string) error {
@@ -27,4 +29,13 @@ func Exist(path string) bool {
 	} else {
 		return false
 	}
+}
+
+func GetFileName(path string) ([]string, error) {
+	if Exist(path) {
+		return nil, errors.New("not exist")
+	}
+	filename := filepath.Base(path)
+	ext := filepath.Ext(filename)
+	return []string{filename, ext, strings.TrimSuffix(filename, ext)}, nil
 }
