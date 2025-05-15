@@ -19,16 +19,12 @@ jobs:
         with:
           go-version: '1.23'
 
-
-#      - name: Install vet tool
-#        run: |
-#          go install golang.org/x/tools/cmd/vet@latest
-#          echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
       - name: List files
         run: ls -R
 
       - name: Show current path
         run: pwd
+
       - name: Use GOPATH
         run: echo  $GOPATH
 
@@ -42,3 +38,35 @@ jobs:
 
       - name: Test
         run: go test ./pkg/... ./util/... -v -bench . -failfast -cover -count=1
+
+      - name: setup result
+        if: always()
+        run: |
+          echo "STATUS=${{ job.status }}" >> $GITHUB_ENV
+            
+
+  notify:
+    needs: build
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+      - name: send result by email
+        uses: dawidd6/action-send-mail@v5
+        with:
+          server_address: ${{ secrets.SMTP_SERVER }}
+          server_port: ${{ secrets.SMTP_PORT }}
+          username: ${{ secrets.SMTP_USERNAME }}
+          password: ${{ secrets.SMTP_PASSWORD }}
+          subject: "GitHub Action Result: ${{ needs.build.result }}"
+          body: |
+            Actions workflow has completed.
+            Repository: ${{ github.repository }}
+            Workflow: ${{ github.workflow }}
+            Branch: ${{ github.ref_name }}
+            Hash Commit: ${{ github.sha }}
+            Status: ${{ needs.build.result }}
+            full logs:
+            https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          to: "m.rozbehani@outlook.com"
+          from: "${{ secrets.SMTP_USERNAME }}"
