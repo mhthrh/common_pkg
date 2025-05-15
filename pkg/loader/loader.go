@@ -9,7 +9,10 @@ import (
 	cryptx "github.com/mhthrh/common_pkg/util/cryptox"
 	env "github.com/mhthrh/common_pkg/util/environment"
 	"github.com/mhthrh/common_pkg/util/file/text"
+	"github.com/mhthrh/common_pkg/util/xStruct"
+	"github.com/pkg/errors"
 	"log"
+	"sync"
 )
 
 const (
@@ -18,7 +21,11 @@ const (
 )
 
 var (
-	config      *Config
+	poolConfig = sync.Pool{
+		New: func() interface{} {
+			return new(Config)
+		},
+	}
 	isEncrypted = false
 )
 
@@ -50,8 +57,10 @@ func New(url, path, user, pass, secret string, enc bool) (IConfig, *xErrors.Erro
 }
 
 func (l Local) Read() *xErrors.Error {
+	config := poolConfig.Get().(*Config)
+	defer poolConfig.Put(config)
 	if config != nil {
-		return nil
+		//return nil
 	}
 	if !isEncrypted {
 		txt := text.New(l.path, fmt.Sprintf(file, "json"), false)
@@ -87,46 +96,89 @@ func (l Local) Read() *xErrors.Error {
 }
 
 func (l Local) GetServer() (Server, *xErrors.Error) {
-	//TODO implement me
-	panic("implement me")
+	config := poolConfig.Get().(*Config)
+	defer poolConfig.Put(config)
+	if config == nil {
+		return Server{}, xErrors.FailedResource(nil, nil)
+	}
+	if xStruct.IsStructEmpty(config.Host) {
+		return Server{}, xErrors.FailedResource(errors.New("some config fields are empty"), nil)
+	}
+	return Server{
+		Host:         config.Host.Host,
+		Port:         config.Host.Port,
+		ReadTimeOut:  config.Host.ReadTimeOut,
+		WriteTimeOut: config.Host.WriteTimeOut,
+		IdleTimeOut:  config.Host.IdleTimeOut,
+	}, nil
 }
 
 func (l Local) GetAdminUser() (AdminUser, *xErrors.Error) {
-	//TODO implement me
-	panic("implement me")
+	config := poolConfig.Get().(*Config)
+	defer poolConfig.Put(config)
+	if config == nil {
+		return AdminUser{}, xErrors.FailedResource(nil, nil)
+	}
+	if xStruct.IsStructEmpty(config.Admin) {
+		return AdminUser{}, xErrors.FailedResource(errors.New("some config fields are empty"), nil)
+	}
+	return AdminUser{
+		UserName: config.Admin.UserName,
+		Password: config.Admin.Password,
+	}, nil
 }
 
 func (l Local) GetDbConfig() (PostgresConfig, *xErrors.Error) {
-	//TODO implement me
-	panic("implement me")
+	config := poolConfig.Get().(*Config)
+	defer poolConfig.Put(config)
+
+	if config == nil {
+		return PostgresConfig{}, xErrors.FailedResource(nil, nil)
+	}
+	if xStruct.IsStructEmpty(config.Admin) {
+		return PostgresConfig{}, xErrors.FailedResource(errors.New("some config fields are empty"), nil)
+	}
+	return PostgresConfig{
+		Host:           config.Postgres.Host,
+		Port:           config.Postgres.Port,
+		UserName:       config.Postgres.UserName,
+		Password:       config.Postgres.Password,
+		SSLModeEnabled: config.Postgres.SSLModeEnabled,
+		DatabaseName:   config.Postgres.DatabaseName,
+		Schema:         config.Postgres.Schema,
+		SSLMode:        config.Postgres.SSLMode,
+	}, nil
 }
 
 func (l Local) GetMongo() (Mongo, *xErrors.Error) {
-	//TODO implement me
-	panic("implement me")
+	config := poolConfig.Get().(*Config)
+	defer poolConfig.Put(config)
+
+	if config == nil {
+		return Mongo{}, xErrors.FailedResource(nil, nil)
+	}
+	if xStruct.IsStructEmpty(config.Admin) {
+		return Mongo{}, xErrors.FailedResource(errors.New("some config fields are empty"), nil)
+	}
+	return Mongo{
+		Host: config.Mongo.Host,
+		Port: config.Mongo.Port,
+	}, nil
+
 }
 
 func (l Local) GetSecrets() ([]Secret, *xErrors.Error) {
-	//TODO implement me
-	panic("implement me")
-}
-func (l Local) DbConfig() (PostgresConfig, *xErrors.Error) {
-	config := PostgresConfig{}
+	config := poolConfig.Get().(*Config)
+	defer poolConfig.Put(config)
 
-	if config.Host == "" {
-		return PostgresConfig{}, xErrors.FailedResource(errs.New("host is required"), nil)
+	if config == nil {
+		return []Secret{}, xErrors.FailedResource(nil, nil)
 	}
-	if config.Port == 0 {
-		return PostgresConfig{}, xErrors.FailedResource(errs.New("port is required"), nil)
-	}
-	if config.UserName == "" {
-		return PostgresConfig{}, xErrors.FailedResource(errs.New("username is required"), nil)
-	}
-	if config.Password == "" {
-		return PostgresConfig{}, xErrors.FailedResource(errs.New("password is required"), nil)
+	if xStruct.IsStructEmpty(config.Admin) {
+		return []Secret{}, xErrors.FailedResource(errors.New("some config fields are empty"), nil)
 	}
 
-	return config, nil
+	return config.Secrets, nil
 }
 
 func (l Local) GetRootAdmin() (AdminUser, *xErrors.Error) {

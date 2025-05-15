@@ -6,11 +6,11 @@
   "secrets": [
     {
       "name": "login_secret",
-      "secretKey": "~~$eCret^&*KEY~~",
+      "secretKey": "~~$eCret^&*KEY~~"
     },
     {
       "name": "app_secret",
-      "secretKey": "~~KoLoFt^&*KEY~~",
+      "secretKey": "~~KoLoFt^&*KEY~~"
     }
   ],
   "postgresql": {
@@ -18,9 +18,9 @@
     "port": 5432,
     "user": "admin_role",
     "password": "S3ring@123",
-    "databaseName": "my_app_db",
+    "database": "my_app_db",
     "schema": "schema1",
-    "sslEnabled": "false"
+    "sslEnabled": false
   },
   "mongo": {
     "host": "localhost",
