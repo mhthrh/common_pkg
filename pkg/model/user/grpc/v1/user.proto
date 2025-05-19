@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+
+package user;
+
+option go_package = "github.com/mhthrh/common_pkg/pkg/model/user/grpc/v1/user";
+
+
+service UserService{
+  rpc  Create(UserRequest) returns (UserResponse){}
+  rpc  GetByUserName(UserName)returns (UserResponse){}
+  rpc  Update(UserRequest)returns (UserKnowledge){}
+  rpc  Remove(UserName)returns (UserKnowledge){}
+}
+
+message UserRequest{
+  string FirstName = 1;
+  string LastName = 2;
+  string Email = 3;
+  string PhoneNumber = 4;
+  string  UserName = 5;
+  string  Password = 6;
+}
+
+message UserResponse{
+  user.UserRequest usr=1;
+}
+
+message UserName{
+  string username = 1;
+}
+
+message UserKnowledge{
+  string code = 1;
+  string message = 2;
+}
