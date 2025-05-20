@@ -12,11 +12,11 @@ var (
 )
 
 func init() {
-	l = logger.NewLogger()
+	l = logger.NewLogger("test")
 }
 
 func TestNewLogger(t *testing.T) {
-	_ = logger.NewLogger()
+	_ = logger.NewLogger("test")
 }
 func TestLog_Info(t *testing.T) {
 	ctx := context.Background()
