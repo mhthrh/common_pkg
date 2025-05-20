@@ -17,15 +17,12 @@ import (
 
 const (
 	environment = "environment"
+	key         = "config"
 	file        = "config.%s"
 )
 
 var (
-	poolConfig = sync.Pool{
-		New: func() interface{} {
-			return new(Config)
-		},
-	}
+	mapConfig   = sync.Map{}
 	isEncrypted = false
 )
 
@@ -57,8 +54,13 @@ func New(url, path, user, pass, secret string, enc bool) (IConfig, *xErrors.Erro
 }
 
 func (l Local) Read() *xErrors.Error {
-	config := poolConfig.Get().(*Config)
-	defer poolConfig.Put(config)
+	if _, ok := mapConfig.Load(key); ok {
+		return nil
+	}
+	var config *Config
+	defer func() {
+		mapConfig.Store(key, config)
+	}()
 
 	if !isEncrypted {
 		txt := text.New(l.path, fmt.Sprintf(file, "json"), false)
@@ -94,11 +96,11 @@ func (l Local) Read() *xErrors.Error {
 }
 
 func (l Local) GetServer() (Server, *xErrors.Error) {
-	config := poolConfig.Get().(*Config)
-	defer poolConfig.Put(config)
-	if config == nil {
+	c, ok := mapConfig.Load(key)
+	if !ok {
 		return Server{}, xErrors.FailedResource(nil, nil)
 	}
+	config := c.(*Config)
 	if xStruct.IsStructEmpty(config.Host) {
 		return Server{}, xErrors.FailedResource(errors.New("some config fields are empty"), nil)
 	}
@@ -112,11 +114,11 @@ func (l Local) GetServer() (Server, *xErrors.Error) {
 }
 
 func (l Local) GetAdminUser() (AdminUser, *xErrors.Error) {
-	config := poolConfig.Get().(*Config)
-	defer poolConfig.Put(config)
-	if config == nil {
+	c, ok := mapConfig.Load(key)
+	if !ok {
 		return AdminUser{}, xErrors.FailedResource(nil, nil)
 	}
+	config := c.(*Config)
 	if xStruct.IsStructEmpty(config.Admin) {
 		return AdminUser{}, xErrors.FailedResource(errors.New("some config fields are empty"), nil)
 	}
@@ -127,12 +129,11 @@ func (l Local) GetAdminUser() (AdminUser, *xErrors.Error) {
 }
 
 func (l Local) GetDbConfig() (PostgresConfig, *xErrors.Error) {
-	config := poolConfig.Get().(*Config)
-	defer poolConfig.Put(config)
-
-	if config == nil {
+	c, ok := mapConfig.Load(key)
+	if !ok {
 		return PostgresConfig{}, xErrors.FailedResource(nil, nil)
 	}
+	config := c.(*Config)
 	if xStruct.IsStructEmpty(config.Admin) {
 		return PostgresConfig{}, xErrors.FailedResource(errors.New("some config fields are empty"), nil)
 	}
@@ -149,12 +150,11 @@ func (l Local) GetDbConfig() (PostgresConfig, *xErrors.Error) {
 }
 
 func (l Local) GetMongo() (Mongo, *xErrors.Error) {
-	config := poolConfig.Get().(*Config)
-	defer poolConfig.Put(config)
-
-	if config == nil {
+	c, ok := mapConfig.Load(key)
+	if !ok {
 		return Mongo{}, xErrors.FailedResource(nil, nil)
 	}
+	config := c.(*Config)
 	if xStruct.IsStructEmpty(config.Admin) {
 		return Mongo{}, xErrors.FailedResource(errors.New("some config fields are empty"), nil)
 	}
@@ -166,12 +166,11 @@ func (l Local) GetMongo() (Mongo, *xErrors.Error) {
 }
 
 func (l Local) GetSecrets() ([]Secret, *xErrors.Error) {
-	config := poolConfig.Get().(*Config)
-	defer poolConfig.Put(config)
-
-	if config == nil {
+	c, ok := mapConfig.Load(key)
+	if !ok {
 		return []Secret{}, xErrors.FailedResource(nil, nil)
 	}
+	config := c.(*Config)
 	if xStruct.IsStructEmpty(config.Admin) {
 		return []Secret{}, xErrors.FailedResource(errors.New("some config fields are empty"), nil)
 	}
@@ -179,12 +178,11 @@ func (l Local) GetSecrets() ([]Secret, *xErrors.Error) {
 	return config.Secrets, nil
 }
 func (l Local) GetGrpcs() ([]Grpc, *xErrors.Error) {
-	config := poolConfig.Get().(*Config)
-	defer poolConfig.Put(config)
-
-	if config == nil {
+	c, ok := mapConfig.Load(key)
+	if !ok {
 		return []Grpc{}, xErrors.FailedResource(nil, nil)
 	}
+	config := c.(*Config)
 	if xStruct.IsStructEmpty(config.Admin) {
 		return []Grpc{}, xErrors.FailedResource(errors.New("some config fields are empty"), nil)
 	}
