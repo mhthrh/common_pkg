@@ -59,9 +59,7 @@ func New(url, path, user, pass, secret string, enc bool) (IConfig, *xErrors.Erro
 func (l Local) Read() *xErrors.Error {
 	config := poolConfig.Get().(*Config)
 	defer poolConfig.Put(config)
-	if config != nil {
-		//return nil
-	}
+
 	if !isEncrypted {
 		txt := text.New(l.path, fmt.Sprintf(file, "json"), false)
 		byts, err := txt.Read()
@@ -180,6 +178,19 @@ func (l Local) GetSecrets() ([]Secret, *xErrors.Error) {
 
 	return config.Secrets, nil
 }
+func (l Local) GetGrpcs() ([]Grpc, *xErrors.Error) {
+	config := poolConfig.Get().(*Config)
+	defer poolConfig.Put(config)
+
+	if config == nil {
+		return []Grpc{}, xErrors.FailedResource(nil, nil)
+	}
+	if xStruct.IsStructEmpty(config.Admin) {
+		return []Grpc{}, xErrors.FailedResource(errors.New("some config fields are empty"), nil)
+	}
+
+	return config.GRPCs, nil
+}
 
 func (l Local) GetRootAdmin() (AdminUser, *xErrors.Error) {
 	admin := AdminUser{}
@@ -217,6 +228,10 @@ func (r Remote) GetMongo() (Mongo, *xErrors.Error) {
 }
 
 func (r Remote) GetSecrets() ([]Secret, *xErrors.Error) {
+	//TODO implement me
+	panic("implement me")
+}
+func (r Remote) GetGrpcs() ([]Grpc, *xErrors.Error) {
 	//TODO implement me
 	panic("implement me")
 }

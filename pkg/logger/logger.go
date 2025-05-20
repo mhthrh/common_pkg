@@ -13,12 +13,12 @@ type Log struct {
 	log *zap.Logger
 }
 
-func NewLogger() ILogger {
+func NewLogger(logName string) ILogger {
 	encoderConfig := ecszap.ECSCompatibleEncoderConfig(zap.NewProductionEncoderConfig())
 	encoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
 	encoder := zapcore.NewJSONEncoder(encoderConfig)
 	logger := zap.New(zapcore.NewCore(encoder, zapcore.Lock(os.Stdout), zap.NewAtomicLevel()), zap.WrapCore((&apmzap.Core{}).WrapCore), zap.AddCaller())
-	logger = logger.Named("com.my-app.user")
+	logger = logger.Named(logName)
 	zap.ReplaceGlobals(logger)
 	return Log{log: logger}
 }
@@ -74,4 +74,7 @@ func (l Log) Fatal(ctx context.Context, msg string, args ...zap.Field) {
 		String:    "",
 		Interface: getLoggerFieldsFromCtx(ctx),
 	}).Fatal(buildMsgField(msg, args...))
+}
+func (l Log) LogSync() {
+	_ = l.log.Core().Sync()
 }

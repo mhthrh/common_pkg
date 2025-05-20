@@ -11,4 +11,5 @@ type ILogger interface {
 	Warn(context.Context, string, ...zap.Field)
 	Error(context.Context, string, ...zap.Field)
 	Fatal(context.Context, string, ...zap.Field)
+	LogSync()
 }

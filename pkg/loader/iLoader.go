@@ -12,4 +12,5 @@ type IConfig interface {
 	GetDbConfig() (PostgresConfig, *xErrors.Error)
 	GetMongo() (Mongo, *xErrors.Error)
 	GetSecrets() ([]Secret, *xErrors.Error)
+	GetGrpcs() ([]Grpc, *xErrors.Error)
 }
