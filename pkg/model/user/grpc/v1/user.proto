@@ -3,11 +3,12 @@ syntax = "proto3";
 
 package user;
 
+import "google/protobuf/timestamp.proto";
 option go_package = "github.com/mhthrh/common_pkg/pkg/model/user/grpc/v1/user";
 
 
 service UserService{
-  rpc  Create(UserRequest) returns (UserResponse){}
+  rpc  Create(UserRequest) returns (UserKnowledge){}
   rpc  GetByUserName(UserName)returns (UserResponse){}
   rpc  Update(UserRequest)returns (UserKnowledge){}
   rpc  Remove(UserName)returns (UserKnowledge){}
@@ -33,4 +34,5 @@ message UserName{
 message UserKnowledge{
   string code = 1;
   string message = 2;
+  google.protobuf.Timestamp time = 3;
 }
