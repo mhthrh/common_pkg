@@ -29,7 +29,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserServiceClient interface {
-	Create(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserResponse, error)
+	Create(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserKnowledge, error)
 	GetByUserName(ctx context.Context, in *UserName, opts ...grpc.CallOption) (*UserResponse, error)
 	Update(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserKnowledge, error)
 	Remove(ctx context.Context, in *UserName, opts ...grpc.CallOption) (*UserKnowledge, error)
@@ -43,9 +43,9 @@ func NewUserServiceClient(cc grpc.ClientConnInterface) UserServiceClient {
 	return &userServiceClient{cc}
 }
 
-func (c *userServiceClient) Create(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserResponse, error) {
+func (c *userServiceClient) Create(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserKnowledge, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(UserResponse)
+	out := new(UserKnowledge)
 	err := c.cc.Invoke(ctx, UserService_Create_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -87,7 +87,7 @@ func (c *userServiceClient) Remove(ctx context.Context, in *UserName, opts ...gr
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility.
 type UserServiceServer interface {
-	Create(context.Context, *UserRequest) (*UserResponse, error)
+	Create(context.Context, *UserRequest) (*UserKnowledge, error)
 	GetByUserName(context.Context, *UserName) (*UserResponse, error)
 	Update(context.Context, *UserRequest) (*UserKnowledge, error)
 	Remove(context.Context, *UserName) (*UserKnowledge, error)
@@ -101,7 +101,7 @@ type UserServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedUserServiceServer struct{}
 
-func (UnimplementedUserServiceServer) Create(context.Context, *UserRequest) (*UserResponse, error) {
+func (UnimplementedUserServiceServer) Create(context.Context, *UserRequest) (*UserKnowledge, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
 }
 func (UnimplementedUserServiceServer) GetByUserName(context.Context, *UserName) (*UserResponse, error) {
