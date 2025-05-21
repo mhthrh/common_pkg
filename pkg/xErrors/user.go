@@ -15,6 +15,7 @@ func NewErrUsrExist(err error, Err *Error) *Error {
 		internal:   Err,
 		baseError:  err,
 		httpStatus: http.StatusConflict,
+		grpcStatus: codes.AlreadyExists,
 		Time:       time.Now(),
 	}
 }
