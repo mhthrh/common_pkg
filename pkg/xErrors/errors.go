@@ -2,6 +2,7 @@ package xErrors
 
 import (
 	"fmt"
+	"google.golang.org/grpc/codes"
 	"net/http"
 	"time"
 )
@@ -25,6 +26,7 @@ type Error struct {
 	internal   *Error
 	baseError  error
 	httpStatus int
+	grpcStatus codes.Code
 	Time       time.Time `json:"time"`
 }
 
@@ -44,6 +46,15 @@ func GetHttpStatus(e *Error, method string) int {
 		return http.StatusNotImplemented
 	}
 
+}
+func GetGrpcCode(e *Error) codes.Code {
+	if e == nil {
+		return codes.OK
+	}
+	if e.ErrorType == Validation || e.ErrorType == Convert {
+		return codes.FailedPrecondition
+	}
+	return e.grpcStatus
 }
 func String(e *Error) string {
 	return fmt.Sprintf("error code:%d, error message %s, detail: %s, internal error: %v, base error: %v, time: %s", e.Code, e.Message, e.Detail, e.internal, e.baseError, e.Time.Format(timeFormat))
@@ -69,6 +80,7 @@ func NewErrNotImplemented(s string) *Error {
 		internal:   nil,
 		baseError:  nil,
 		httpStatus: http.StatusNotFound,
+		grpcStatus: codes.NotFound,
 		Time:       time.Now(),
 	}
 }

@@ -1,6 +1,7 @@
 package xErrors
 
 import (
+	"google.golang.org/grpc/codes"
 	"net/http"
 	"time"
 )
@@ -25,6 +26,7 @@ func NewErrUsrNotExist(err error, Err *Error) *Error {
 		Detail:     "user doesnt exist",
 		internal:   Err,
 		baseError:  err,
+		grpcStatus: codes.NotFound,
 		httpStatus: http.StatusNotFound,
 		Time:       time.Now(),
 	}
