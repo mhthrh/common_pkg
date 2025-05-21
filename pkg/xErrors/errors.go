@@ -8,14 +8,15 @@ import (
 )
 
 const (
-	timeFormat = "2006-01-02 15:04:05.000"
-	User       = "invalidUser"
-	Validation = "validation"
-	Loader     = "configLoader"
-	Token      = "invalidToken"
-	Convert    = "CastError"
-	Successful = "success"
-	General    = "general"
+	SuccessCode = "00"
+	timeFormat  = "2006-01-02 15:04:05.000"
+	User        = "invalidUser"
+	Validation  = "validation"
+	Loader      = "configLoader"
+	Token       = "invalidToken"
+	Convert     = "CastError"
+	Successful  = "success"
+	General     = "general"
 )
 
 type Error struct {
@@ -65,7 +66,7 @@ func String(e *Error) string {
 
 func Success() *Error {
 	return &Error{
-		Code:       "10000",
+		Code:       SuccessCode,
 		Message:    "operation was success",
 		ErrorType:  Successful,
 		Detail:     "successful",
