@@ -8,7 +8,7 @@ import (
 
 func NewErrConvertData(s error) *Error {
 	return &Error{
-		Code:       10301,
+		Code:       "10301",
 		Message:    "cannot cast Body to struct",
 		ErrorType:  Convert,
 		Detail:     fmt.Sprintf("cannot cast Body to struct: => %s", s.Error()),
@@ -20,7 +20,7 @@ func NewErrConvertData(s error) *Error {
 }
 func NewErrKeyNotExist(s string) *Error {
 	return &Error{
-		Code:       10302,
+		Code:       "10302",
 		ErrorType:  Convert,
 		Message:    "key not exist in GET method",
 		Detail:     fmt.Sprintf("cannot find %s in request", s),
