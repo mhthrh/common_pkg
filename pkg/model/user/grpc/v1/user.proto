@@ -25,6 +25,7 @@ message UserRequest{
 
 message UserResponse{
   user.UserRequest usr=1;
+  string resultCode=2;
 }
 
 message UserName{
@@ -34,5 +35,6 @@ message UserName{
 message UserKnowledge{
   string code = 1;
   string message = 2;
-  google.protobuf.Timestamp time = 3;
+  string resultCode=3;
+  google.protobuf.Timestamp time = 4;
 }
