@@ -3,15 +3,16 @@ syntax = "proto3";
 
 package user;
 
-import "google/protobuf/timestamp.proto";
+import "pkg/xErrors/grpc/v1/gError.proto";
+
 option go_package = "github.com/mhthrh/common_pkg/pkg/model/user/grpc/v1/user";
 
 
 service UserService{
-  rpc  Create(UserRequest) returns (UserKnowledge){}
+  rpc  Create(UserRequest) returns (Error){}
   rpc  GetByUserName(UserName)returns (UserResponse){}
-  rpc  Update(UserRequest)returns (UserKnowledge){}
-  rpc  Remove(UserName)returns (UserKnowledge){}
+  rpc  Update(UserRequest)returns (Error){}
+  rpc  Remove(UserName)returns (Error){}
 }
 
 message UserRequest{
@@ -22,19 +23,14 @@ message UserRequest{
   string  UserName = 5;
   string  Password = 6;
 }
-
-message UserResponse{
-  user.UserRequest usr=1;
-  string resultCode=2;
-}
-
 message UserName{
   string username = 1;
 }
+message UserResponse{
+  user.UserRequest usr=1;
+  v1.Error Error=2;
+}
 
-message UserKnowledge{
-  string code = 1;
-  string message = 2;
-  string resultCode=3;
-  google.protobuf.Timestamp time = 4;
+message Error{
+  v1.Error Error =1;
 }

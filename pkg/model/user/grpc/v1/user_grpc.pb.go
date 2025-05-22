@@ -29,10 +29,10 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserServiceClient interface {
-	Create(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserKnowledge, error)
+	Create(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*Error, error)
 	GetByUserName(ctx context.Context, in *UserName, opts ...grpc.CallOption) (*UserResponse, error)
-	Update(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserKnowledge, error)
-	Remove(ctx context.Context, in *UserName, opts ...grpc.CallOption) (*UserKnowledge, error)
+	Update(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*Error, error)
+	Remove(ctx context.Context, in *UserName, opts ...grpc.CallOption) (*Error, error)
 }
 
 type userServiceClient struct {
@@ -43,9 +43,9 @@ func NewUserServiceClient(cc grpc.ClientConnInterface) UserServiceClient {
 	return &userServiceClient{cc}
 }
 
-func (c *userServiceClient) Create(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserKnowledge, error) {
+func (c *userServiceClient) Create(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*Error, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(UserKnowledge)
+	out := new(Error)
 	err := c.cc.Invoke(ctx, UserService_Create_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -63,9 +63,9 @@ func (c *userServiceClient) GetByUserName(ctx context.Context, in *UserName, opt
 	return out, nil
 }
 
-func (c *userServiceClient) Update(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserKnowledge, error) {
+func (c *userServiceClient) Update(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*Error, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(UserKnowledge)
+	out := new(Error)
 	err := c.cc.Invoke(ctx, UserService_Update_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -73,9 +73,9 @@ func (c *userServiceClient) Update(ctx context.Context, in *UserRequest, opts ..
 	return out, nil
 }
 
-func (c *userServiceClient) Remove(ctx context.Context, in *UserName, opts ...grpc.CallOption) (*UserKnowledge, error) {
+func (c *userServiceClient) Remove(ctx context.Context, in *UserName, opts ...grpc.CallOption) (*Error, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(UserKnowledge)
+	out := new(Error)
 	err := c.cc.Invoke(ctx, UserService_Remove_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -87,10 +87,10 @@ func (c *userServiceClient) Remove(ctx context.Context, in *UserName, opts ...gr
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility.
 type UserServiceServer interface {
-	Create(context.Context, *UserRequest) (*UserKnowledge, error)
+	Create(context.Context, *UserRequest) (*Error, error)
 	GetByUserName(context.Context, *UserName) (*UserResponse, error)
-	Update(context.Context, *UserRequest) (*UserKnowledge, error)
-	Remove(context.Context, *UserName) (*UserKnowledge, error)
+	Update(context.Context, *UserRequest) (*Error, error)
+	Remove(context.Context, *UserName) (*Error, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -101,16 +101,16 @@ type UserServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedUserServiceServer struct{}
 
-func (UnimplementedUserServiceServer) Create(context.Context, *UserRequest) (*UserKnowledge, error) {
+func (UnimplementedUserServiceServer) Create(context.Context, *UserRequest) (*Error, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
 }
 func (UnimplementedUserServiceServer) GetByUserName(context.Context, *UserName) (*UserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetByUserName not implemented")
 }
-func (UnimplementedUserServiceServer) Update(context.Context, *UserRequest) (*UserKnowledge, error) {
+func (UnimplementedUserServiceServer) Update(context.Context, *UserRequest) (*Error, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
 }
-func (UnimplementedUserServiceServer) Remove(context.Context, *UserName) (*UserKnowledge, error) {
+func (UnimplementedUserServiceServer) Remove(context.Context, *UserName) (*Error, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Remove not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
