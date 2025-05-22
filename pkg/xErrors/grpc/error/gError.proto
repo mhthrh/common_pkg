@@ -1,9 +1,9 @@
 syntax = "proto3";
 
-package v1;
+package error;
 
 import "google/protobuf/timestamp.proto";
-option go_package = "github.com/mhthrh/common_pkg/xError/grpc/v1";
+option go_package = "github.com/mhthrh/common_pkg/xErrors/grpc/error";
 
 message Error{
   string Code = 1;

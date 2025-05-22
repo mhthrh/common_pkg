@@ -3,7 +3,7 @@ syntax = "proto3";
 
 package user;
 
-import "pkg/xErrors/grpc/v1/gError.proto";
+import "pkg/xErrors/grpc/error/gError.proto";
 
 option go_package = "github.com/mhthrh/common_pkg/pkg/model/user/grpc/v1/user";
 
@@ -28,9 +28,9 @@ message UserName{
 }
 message UserResponse{
   user.UserRequest usr=1;
-  v1.Error Error=2;
+  error.Error Error=2;
 }
 
 message Error{
-  v1.Error Error =1;
+  error.Error Error =1;
 }
