@@ -7,7 +7,7 @@
 package user
 
 import (
-	error1 "github.com/mhthrh/common_pkg/xErrors/grpc/error"
+	error1 "github.com/mhthrh/common_pkg/pkg/xErrors/grpc/error"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
