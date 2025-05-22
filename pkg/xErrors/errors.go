@@ -24,11 +24,11 @@ type Error struct {
 	ErrorType  string `json:"-"`
 	Message    string `json:"message"`
 	Detail     string `json:"detail"`
-	internal   *Error
+	Internal   *Error `json:"-"`
 	baseError  error
-	httpStatus int
-	grpcStatus codes.Code
-	Time       time.Time `json:"time"`
+	HttpStatus int        `json:"-"`
+	GrpcStatus codes.Code `json:"-"`
+	Time       time.Time  `json:"time"`
 }
 
 func GetHttpStatus(e *Error, method string) int {
@@ -41,7 +41,7 @@ func GetHttpStatus(e *Error, method string) int {
 	case e.ErrorType == Successful:
 		return http.StatusOK
 	default:
-		if result := e.httpStatus; result != 0 {
+		if result := e.HttpStatus; result != 0 {
 			return result
 		}
 		return http.StatusNotImplemented
@@ -55,10 +55,10 @@ func GetGrpcCode(e *Error) codes.Code {
 	if e.ErrorType == Validation || e.ErrorType == Convert {
 		return codes.FailedPrecondition
 	}
-	return e.grpcStatus
+	return e.GrpcStatus
 }
 func StringVerbal(e *Error) string {
-	return fmt.Sprintf("error code:%s, error message %s, detail: %s, internal error: %v, base error: %v, time: %s", e.Code, e.Message, e.Detail, e.internal, e.baseError, e.Time.Format(timeFormat))
+	return fmt.Sprintf("error code:%s, error message %s, detail: %s, internal error: %v, base error: %v, time: %s", e.Code, e.Message, e.Detail, e.Internal, e.baseError, e.Time.Format(timeFormat))
 }
 func String(e *Error) string {
 	return fmt.Sprintf("error code:%s, error message %s, detail: %s, time: %s", e.Code, e.Message, e.Detail, e.Time.Format(timeFormat))
@@ -70,9 +70,9 @@ func Success() *Error {
 		Message:    "operation was success",
 		ErrorType:  Successful,
 		Detail:     "successful",
-		internal:   nil,
+		Internal:   nil,
 		baseError:  nil,
-		grpcStatus: codes.OK,
+		GrpcStatus: codes.OK,
 		Time:       time.Now(),
 	}
 }
@@ -82,10 +82,10 @@ func NewErrNotImplemented(s string) *Error {
 		Message:    "method/route not found/implemented",
 		ErrorType:  General,
 		Detail:     fmt.Sprintf("method: %s not found/implemented", s),
-		internal:   nil,
+		Internal:   nil,
 		baseError:  nil,
-		httpStatus: http.StatusNotFound,
-		grpcStatus: codes.NotFound,
+		HttpStatus: http.StatusNotFound,
+		GrpcStatus: codes.NotFound,
 		Time:       time.Now(),
 	}
 }

@@ -12,10 +12,10 @@ func NewErrUsrExist(err error, Err *Error) *Error {
 		ErrorType:  User,
 		Message:    "already user exist",
 		Detail:     "already user exist",
-		internal:   Err,
+		Internal:   Err,
 		baseError:  err,
-		httpStatus: http.StatusConflict,
-		grpcStatus: codes.AlreadyExists,
+		HttpStatus: http.StatusConflict,
+		GrpcStatus: codes.AlreadyExists,
 		Time:       time.Now(),
 	}
 }
@@ -25,10 +25,10 @@ func NewErrUsrNotExist(err error, Err *Error) *Error {
 		ErrorType:  User,
 		Message:    "user doesnt exist",
 		Detail:     "user doesnt exist",
-		internal:   Err,
+		Internal:   Err,
 		baseError:  err,
-		grpcStatus: codes.NotFound,
-		httpStatus: http.StatusNotFound,
+		GrpcStatus: codes.NotFound,
+		HttpStatus: http.StatusNotFound,
 		Time:       time.Now(),
 	}
 }

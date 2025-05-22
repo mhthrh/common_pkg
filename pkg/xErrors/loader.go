@@ -12,9 +12,9 @@ func NotImplemented(s string) *Error {
 		Message:    "method not implemented",
 		ErrorType:  Loader,
 		Detail:     fmt.Sprintf("%s not Implemented", s),
-		internal:   nil,
+		Internal:   nil,
 		baseError:  nil,
-		httpStatus: http.StatusNotFound,
+		HttpStatus: http.StatusNotFound,
 		Time:       time.Now(),
 	}
 }
@@ -24,9 +24,9 @@ func FailedResource(err error, E *Error) *Error {
 		Message:    "resource failed",
 		ErrorType:  Loader,
 		Detail:     fmt.Sprintf("canot access to resource, %v ", err),
-		internal:   E,
+		Internal:   E,
 		baseError:  err,
-		httpStatus: http.StatusNotFound,
+		HttpStatus: http.StatusNotFound,
 		Time:       time.Now(),
 	}
 }
