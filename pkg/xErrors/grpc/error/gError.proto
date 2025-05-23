@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package error;
+
+import "google/protobuf/timestamp.proto";
+option go_package = "github.com/mhthrh/common_pkg/pkg/xErrors/grpc/error";
+
+message Error{
+  string Code = 1;
+  string ErrorType = 2;
+  string Message = 3;
+  string Detail = 4;
+  int64  HttpStatus = 5;
+  int64  GrpcStatus = 6;
+  string InternalError = 7;
+  google.protobuf.Timestamp Time = 8;
+}

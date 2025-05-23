@@ -15,6 +15,7 @@ type Config struct {
 	Mongo    Mongo          `json:"mongo"`
 	Admin    AdminUser      `json:"admin"`
 	Host     Server         `json:"server"`
+	GRPCs    []Grpc         `json:"grpc"`
 }
 
 type Server struct {
@@ -47,6 +48,13 @@ type Secret struct {
 	Name      string `json:"name"`
 	SecretKey string `json:"secretKey"`
 }
+type Grpc struct {
+	Srv   string `json:"srv"`
+	Host  string `json:"host"`
+	Port  int    `json:"port"`
+	Count int    `json:"poolSize"`
+}
+
 type SSLMode string
 
 const (

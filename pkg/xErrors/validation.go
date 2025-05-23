@@ -4,11 +4,11 @@ import "time"
 
 func NewErrMobilePhone(err error, Err *Error) *Error {
 	return &Error{
-		Code:      101001,
+		Code:      "101001",
 		ErrorType: Validation,
 		Message:   "mobile phone not valid",
 		Detail:    "mobile phone not valid",
-		internal:  Err,
+		Internal:  Err,
 		baseError: err,
 		Time:      time.Now(),
 	}
@@ -16,33 +16,33 @@ func NewErrMobilePhone(err error, Err *Error) *Error {
 
 func NewErrName(err error, Err *Error) *Error {
 	return &Error{
-		Code:      101002,
+		Code:      "101002",
 		ErrorType: Validation,
 		Message:   "name not valid",
 		Detail:    "name not valid",
-		internal:  Err,
+		Internal:  Err,
 		baseError: err,
 		Time:      time.Now(),
 	}
 }
 func NewErrPasswordValidation(err error, Err *Error) *Error {
 	return &Error{
-		Code:      101003,
+		Code:      "101003",
 		ErrorType: Validation,
 		Message:   "password not valid",
 		Detail:    "password not valid",
-		internal:  Err,
+		Internal:  Err,
 		baseError: err,
 		Time:      time.Now(),
 	}
 }
 func NewErrEmailValidation(err error, Err *Error) *Error {
 	return &Error{
-		Code:      101004,
+		Code:      "101004",
 		ErrorType: Validation,
 		Message:   "email not valid",
 		Detail:    "email not valid",
-		internal:  Err,
+		Internal:  Err,
 		baseError: err,
 		Time:      time.Now(),
 	}

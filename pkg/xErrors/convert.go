@@ -8,25 +8,25 @@ import (
 
 func NewErrConvertData(s error) *Error {
 	return &Error{
-		Code:       10301,
+		Code:       "10301",
 		Message:    "cannot cast Body to struct",
 		ErrorType:  Convert,
 		Detail:     fmt.Sprintf("cannot cast Body to struct: => %s", s.Error()),
-		internal:   nil,
+		Internal:   nil,
 		baseError:  s,
-		httpStatus: http.StatusBadRequest,
+		HttpStatus: http.StatusBadRequest,
 		Time:       time.Now(),
 	}
 }
 func NewErrKeyNotExist(s string) *Error {
 	return &Error{
-		Code:       10302,
+		Code:       "10302",
 		ErrorType:  Convert,
 		Message:    "key not exist in GET method",
 		Detail:     fmt.Sprintf("cannot find %s in request", s),
-		internal:   nil,
+		Internal:   nil,
 		baseError:  nil,
-		httpStatus: http.StatusNotFound,
+		HttpStatus: http.StatusNotFound,
 		Time:       time.Now(),
 	}
 }

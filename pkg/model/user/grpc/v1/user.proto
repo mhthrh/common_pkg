@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+
+package user;
+
+import "pkg/xErrors/grpc/error/gError.proto";
+
+option go_package = "github.com/mhthrh/common_pkg/pkg/model/user/grpc/v1/user";
+
+
+service UserService{
+  rpc  Create(UserRequest) returns (Error){}
+  rpc  GetByUserName(UserName)returns (UserResponse){}
+  rpc  Update(UserRequest)returns (Error){}
+  rpc  Remove(UserName)returns (Error){}
+}
+
+message UserRequest{
+  string FirstName = 1;
+  string LastName = 2;
+  string Email = 3;
+  string PhoneNumber = 4;
+  string  UserName = 5;
+  string  Password = 6;
+}
+message UserName{
+  string username = 1;
+}
+message UserResponse{
+  user.UserRequest usr=1;
+  error.Error Error=2;
+}
+
+message Error{
+  error.Error Error =1;
+}
