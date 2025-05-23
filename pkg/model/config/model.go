@@ -49,9 +49,10 @@ type Secret struct {
 	SecretKey string `json:"secretKey"`
 }
 type Grpc struct {
-	Srv  string `json:"srv"`
-	Host string `json:"host"`
-	Port int    `json:"port"`
+	Srv   string `json:"srv"`
+	Host  string `json:"host"`
+	Port  int    `json:"port"`
+	Count int    `json:"count"`
 }
 
 type SSLMode string
