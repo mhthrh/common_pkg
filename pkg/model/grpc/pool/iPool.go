@@ -12,6 +12,6 @@ type GRPC struct {
 }
 
 type IGrpcPool interface {
-	Get(key string) (*grpc.ClientConn, error)
-	Release(keys []string) error
+	Get() (*grpc.ClientConn, error)
+	Release() error
 }
