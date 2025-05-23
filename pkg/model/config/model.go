@@ -52,7 +52,7 @@ type Grpc struct {
 	Srv   string `json:"srv"`
 	Host  string `json:"host"`
 	Port  int    `json:"port"`
-	Count int    `json:"count"`
+	Count int    `json:"poolSize"`
 }
 
 type SSLMode string
