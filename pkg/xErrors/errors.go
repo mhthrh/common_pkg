@@ -4,6 +4,7 @@ import (
 	"fmt"
 	gError "github.com/mhthrh/common_pkg/pkg/xErrors/grpc/error"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"net/http"
 	"time"
 )
@@ -95,14 +96,13 @@ func Err2Grpc(e *Error) *gError.Error {
 		return &gError.Error{}
 	}
 	return &gError.Error{
-		Code:          e.Code,
-		ErrorType:     e.ErrorType,
-		Message:       e.Message,
-		Detail:        e.Detail,
-		HttpStatus:    int64(e.HttpStatus),
-		GrpcStatus:    int64(e.GrpcStatus),
-		InternalError: String(e),
-		Time:          nil,
+		Code:       e.Code,
+		ErrorType:  e.ErrorType,
+		Message:    e.Message,
+		Detail:     e.Detail,
+		HttpStatus: int64(e.HttpStatus),
+		GrpcStatus: int64(e.GrpcStatus),
+		Time:       timestamppb.New(e.Time),
 	}
 }
 
@@ -117,6 +117,8 @@ func Grpc2Err(e *gError.Error) *Error {
 		Detail:     e.Detail,
 		HttpStatus: int(e.HttpStatus),
 		GrpcStatus: codes.Code(e.GrpcStatus),
-		Time:       time.Now(),
+		Time: func(ts *timestamppb.Timestamp) time.Time {
+			return ts.AsTime()
+		}(e.Time),
 	}
 }
