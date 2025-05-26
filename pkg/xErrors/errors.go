@@ -91,11 +91,11 @@ func NewErrNotImplemented(s string) *Error {
 		Time:       time.Now(),
 	}
 }
-func Err2Grpc(e *Error) *gError.Error {
+func Err2Grpc(e *Error) gError.Error {
 	if e == nil {
-		return &gError.Error{}
+		return gError.Error{}
 	}
-	return &gError.Error{
+	return gError.Error{
 		Code:       e.Code,
 		ErrorType:  e.ErrorType,
 		Message:    e.Message,
