@@ -2,6 +2,7 @@ package xErrors
 
 import (
 	"fmt"
+	gError "github.com/mhthrh/common_pkg/pkg/xErrors/grpc/error"
 	"google.golang.org/grpc/codes"
 	"net/http"
 	"time"
@@ -86,6 +87,36 @@ func NewErrNotImplemented(s string) *Error {
 		baseError:  nil,
 		HttpStatus: http.StatusNotFound,
 		GrpcStatus: codes.NotFound,
+		Time:       time.Now(),
+	}
+}
+func Err2Grpc(e *Error) *gError.Error {
+	if e == nil {
+		return &gError.Error{}
+	}
+	return &gError.Error{
+		Code:          e.Code,
+		ErrorType:     e.ErrorType,
+		Message:       e.Message,
+		Detail:        e.Detail,
+		HttpStatus:    int64(e.HttpStatus),
+		GrpcStatus:    int64(e.GrpcStatus),
+		InternalError: String(e),
+		Time:          nil,
+	}
+}
+
+func Grpc2Err(e *gError.Error) *Error {
+	if e == nil {
+		return &Error{}
+	}
+	return &Error{
+		Code:       e.Code,
+		ErrorType:  e.ErrorType,
+		Message:    e.Message,
+		Detail:     e.Detail,
+		HttpStatus: int(e.HttpStatus),
+		GrpcStatus: codes.Code(e.GrpcStatus),
 		Time:       time.Now(),
 	}
 }
