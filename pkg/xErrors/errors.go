@@ -5,6 +5,7 @@ import (
 	gError "github.com/mhthrh/common_pkg/pkg/xErrors/grpc/error"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/protobuf/types/known/timestamppb"
+	"log"
 	"net/http"
 	"time"
 )
@@ -79,6 +80,19 @@ func Success() *Error {
 		Time:       time.Now(),
 	}
 }
+func InternalError(e error) *Error {
+	return &Error{
+		Code:       "500",
+		Message:    "internal error",
+		ErrorType:  General,
+		Detail:     "internal error",
+		Internal:   nil,
+		baseError:  e,
+		HttpStatus: http.StatusInternalServerError,
+		GrpcStatus: codes.Internal,
+		Time:       time.Now(),
+	}
+}
 func NewErrNotImplemented(s string) *Error {
 	return &Error{
 		Code:       "20000",
@@ -107,11 +121,17 @@ func Err2Grpc(e *Error) gError.Error {
 	}
 }
 
-func Grpc2Err(e *gError.Error) *Error {
+func Grpc2Err(e *gError.Error) (result *Error) {
+	defer func() {
+		if r := recover(); r != nil {
+			log.Println(r)
+			result = InternalError(r.(error))
+		}
+	}()
 	if e == nil {
-		return &Error{}
+		result = &Error{}
 	}
-	return &Error{
+	result = &Error{
 		Code:       e.Code,
 		ErrorType:  e.ErrorType,
 		Message:    e.Message,
@@ -122,4 +142,5 @@ func Grpc2Err(e *gError.Error) *Error {
 			return ts.AsTime()
 		}(e.Time),
 	}
+	return
 }
