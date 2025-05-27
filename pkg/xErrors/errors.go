@@ -4,7 +4,6 @@ import (
 	"fmt"
 	gError "github.com/mhthrh/common_pkg/pkg/xErrors/grpc/error"
 	"google.golang.org/grpc/codes"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"log"
 	"net/http"
 	"time"
@@ -118,7 +117,7 @@ func Err2Grpc(e *Error) (result gError.Error) {
 				HttpStatus:    http.StatusInternalServerError,
 				GrpcStatus:    int64(codes.Internal),
 				InternalError: "",
-				Time:          timestamppb.New(time.Now()),
+				//Time:          timestamppb.New(time.Now()),
 			}
 		}
 	}()
@@ -131,7 +130,7 @@ func Err2Grpc(e *Error) (result gError.Error) {
 			HttpStatus:    http.StatusOK,
 			GrpcStatus:    int64(0),
 			InternalError: "",
-			Time:          timestamppb.New(time.Now()),
+			//	Time:          timestamppb.New(time.Now()),
 		}
 	}
 	return gError.Error{
@@ -141,7 +140,7 @@ func Err2Grpc(e *Error) (result gError.Error) {
 		Detail:     e.Detail,
 		HttpStatus: int64(e.HttpStatus),
 		GrpcStatus: int64(e.GrpcStatus),
-		Time:       timestamppb.New(e.Time),
+		//Time:       timestamppb.New(e.Time),
 	}
 }
 
@@ -163,9 +162,9 @@ func Grpc2Err(e *gError.Error) (result *Error) {
 		Detail:     e.Detail,
 		HttpStatus: int(e.HttpStatus),
 		GrpcStatus: codes.Code(e.GrpcStatus),
-		Time: func(ts *timestamppb.Timestamp) time.Time {
-			return ts.AsTime()
-		}(e.Time),
+		//Time: func(ts *timestamppb.Timestamp) time.Time {
+		//	return ts.AsTime()
+		//}(e.Time),
 	}
 	return
 }
