@@ -106,9 +106,33 @@ func NewErrNotImplemented(s string) *Error {
 		Time:       time.Now(),
 	}
 }
-func Err2Grpc(e *Error) gError.Error {
+func Err2Grpc(e *Error) (result gError.Error) {
+	defer func() {
+		if r := recover(); r != nil {
+			log.Println("be ga raftim-1", r)
+			result = gError.Error{
+				Code:          "500",
+				ErrorType:     General,
+				Message:       "internal error",
+				Detail:        "internal error",
+				HttpStatus:    http.StatusInternalServerError,
+				GrpcStatus:    int64(codes.Internal),
+				InternalError: "",
+				Time:          timestamppb.New(time.Now()),
+			}
+		}
+	}()
 	if e == nil {
-		return gError.Error{}
+		return gError.Error{
+			Code:          SuccessCode,
+			ErrorType:     Successful,
+			Message:       "transaction is successful",
+			Detail:        "transaction is successful",
+			HttpStatus:    http.StatusOK,
+			GrpcStatus:    int64(0),
+			InternalError: "",
+			Time:          timestamppb.New(time.Now()),
+		}
 	}
 	return gError.Error{
 		Code:       e.Code,
@@ -124,12 +148,13 @@ func Err2Grpc(e *Error) gError.Error {
 func Grpc2Err(e *gError.Error) (result *Error) {
 	defer func() {
 		if r := recover(); r != nil {
-			log.Println(r)
+			log.Println("be ga raftim-2", r)
 			result = InternalError(r.(error))
 		}
 	}()
 	if e == nil {
-		result = &Error{}
+		result = Success()
+		return
 	}
 	result = &Error{
 		Code:       e.Code,
