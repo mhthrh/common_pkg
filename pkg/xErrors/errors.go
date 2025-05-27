@@ -75,6 +75,14 @@ func Yaml(e *Error) []byte {
 	return b
 }
 
+func Yaml2Struct(bts []byte) (*Error, error) {
+	var result Error
+	err := yaml.Unmarshal(bts, &result)
+	if err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
 func Success() *Error {
 	return &Error{
 		Code:       SuccessCode,
