@@ -4,15 +4,16 @@ syntax = "proto3";
 package user;
 
 import "pkg/xErrors/grpc/error/gError.proto";
+import "google/protobuf/empty.proto";
 
 option go_package = "github.com/mhthrh/common_pkg/pkg/model/user/grpc/v1/user";
 
 
 service UserService{
-  rpc  Create(UserRequest) returns (Error){}
+  rpc  Create(UserRequest) returns (google.protobuf.Empty){}
   rpc  GetByUserName(UserName)returns (UserResponse){}
-  rpc  Update(UserRequest)returns (Error){}
-  rpc  Remove(UserName)returns (Error){}
+  rpc  Update(UserRequest)returns (google.protobuf.Empty){}
+  rpc  Remove(UserName)returns (google.protobuf.Empty){}
 }
 
 message UserRequest{
@@ -29,8 +30,4 @@ message UserName{
 message UserResponse{
   user.UserRequest usr=1;
   error.Error Error=2;
-}
-
-message Error{
-  error.Error Error =1;
 }
