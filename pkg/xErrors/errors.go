@@ -19,6 +19,7 @@ const (
 	Convert     = "CastError"
 	Successful  = "success"
 	General     = "general"
+	Connection  = "connection"
 )
 
 type Error struct {
