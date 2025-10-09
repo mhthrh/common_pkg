@@ -418,9 +418,9 @@ const file_pkg_model_visa_grpc_v1_visa_proto_rawDesc = "" +
 	"\x04Bank\x18\x01 \x01(\v2\v.visa.BankRR\x04Bank\x12\x12\n" +
 	"\x04Type\x18\x02 \x01(\tR\x04Type\x12\x1a\n" +
 	"\bLastName\x18\x03 \x01(\tR\bLastName\x12\x1c\n" +
-	"\tFirstName\x18\x04 \x01(\tR\tFirstName2E\n" +
-	"\vVisaService\x126\n" +
-	"\x06Verify\x12\x14.visa.VerifyResponse\x1a\x14.visa.VerifyResponse\"\x00B:Z8github.com/mhthrh/common_pkg/pkg/model/visa/grpc/v1/visab\x06proto3"
+	"\tFirstName\x18\x04 \x01(\tR\tFirstName2D\n" +
+	"\vVisaService\x125\n" +
+	"\x06Verify\x12\x14.visa.VerifyResponse\x1a\x13.visa.VerifyRequest\"\x00B:Z8github.com/mhthrh/common_pkg/pkg/model/visa/grpc/v1/visab\x06proto3"
 
 var (
 	file_pkg_model_visa_grpc_v1_visa_proto_rawDescOnce sync.Once
@@ -449,7 +449,7 @@ var file_pkg_model_visa_grpc_v1_visa_proto_depIdxs = []int32{
 	5, // 2: visa.VerifyResponse.Error:type_name -> error.Error
 	3, // 3: visa.Recipient.Bank:type_name -> visa.BankR
 	1, // 4: visa.VisaService.Verify:input_type -> visa.VerifyResponse
-	1, // 5: visa.VisaService.Verify:output_type -> visa.VerifyResponse
+	0, // 5: visa.VisaService.Verify:output_type -> visa.VerifyRequest
 	5, // [5:6] is the sub-list for method output_type
 	4, // [4:5] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name

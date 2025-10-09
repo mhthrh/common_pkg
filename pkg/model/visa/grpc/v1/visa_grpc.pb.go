@@ -26,7 +26,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type VisaServiceClient interface {
-	Verify(ctx context.Context, in *VerifyResponse, opts ...grpc.CallOption) (*VerifyResponse, error)
+	Verify(ctx context.Context, in *VerifyResponse, opts ...grpc.CallOption) (*VerifyRequest, error)
 }
 
 type visaServiceClient struct {
@@ -37,9 +37,9 @@ func NewVisaServiceClient(cc grpc.ClientConnInterface) VisaServiceClient {
 	return &visaServiceClient{cc}
 }
 
-func (c *visaServiceClient) Verify(ctx context.Context, in *VerifyResponse, opts ...grpc.CallOption) (*VerifyResponse, error) {
+func (c *visaServiceClient) Verify(ctx context.Context, in *VerifyResponse, opts ...grpc.CallOption) (*VerifyRequest, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(VerifyResponse)
+	out := new(VerifyRequest)
 	err := c.cc.Invoke(ctx, VisaService_Verify_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -51,7 +51,7 @@ func (c *visaServiceClient) Verify(ctx context.Context, in *VerifyResponse, opts
 // All implementations must embed UnimplementedVisaServiceServer
 // for forward compatibility.
 type VisaServiceServer interface {
-	Verify(context.Context, *VerifyResponse) (*VerifyResponse, error)
+	Verify(context.Context, *VerifyResponse) (*VerifyRequest, error)
 	mustEmbedUnimplementedVisaServiceServer()
 }
 
@@ -62,7 +62,7 @@ type VisaServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedVisaServiceServer struct{}
 
-func (UnimplementedVisaServiceServer) Verify(context.Context, *VerifyResponse) (*VerifyResponse, error) {
+func (UnimplementedVisaServiceServer) Verify(context.Context, *VerifyResponse) (*VerifyRequest, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Verify not implemented")
 }
 func (UnimplementedVisaServiceServer) mustEmbedUnimplementedVisaServiceServer() {}
