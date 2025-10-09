@@ -16,7 +16,7 @@ message VerifyRequest{
   string PayoutMethod = 1;
   Recipient RecipientDetail = 2;
   string InitiatingPartyId = 3;
-  string ClientVerificationReference=4;
+  string ClientVerRef=4;
 }
 
 message VerifyResponse{
