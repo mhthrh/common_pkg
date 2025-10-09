@@ -13,10 +13,10 @@ service VisaService{
 }
 
 message VerifyRequest{
-  string payoutMethod = 1;
+  string PayoutMethod = 1;
   Recipient RecipientDetail = 2;
-  string initiatingPartyId = 3;
-  string clientVerificationReference=4;
+  string InitiatingPartyId = 3;
+  string ClientVerificationReference=4;
 }
 
 message VerifyResponse{

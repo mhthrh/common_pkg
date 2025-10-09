@@ -24,10 +24,10 @@ const (
 
 type VerifyRequest struct {
 	state                       protoimpl.MessageState `protogen:"open.v1"`
-	PayoutMethod                string                 `protobuf:"bytes,1,opt,name=payoutMethod,proto3" json:"payoutMethod,omitempty"`
+	PayoutMethod                string                 `protobuf:"bytes,1,opt,name=PayoutMethod,proto3" json:"PayoutMethod,omitempty"`
 	RecipientDetail             *Recipient             `protobuf:"bytes,2,opt,name=RecipientDetail,proto3" json:"RecipientDetail,omitempty"`
-	InitiatingPartyId           string                 `protobuf:"bytes,3,opt,name=initiatingPartyId,proto3" json:"initiatingPartyId,omitempty"`
-	ClientVerificationReference string                 `protobuf:"bytes,4,opt,name=clientVerificationReference,proto3" json:"clientVerificationReference,omitempty"`
+	InitiatingPartyId           string                 `protobuf:"bytes,3,opt,name=InitiatingPartyId,proto3" json:"InitiatingPartyId,omitempty"`
+	ClientVerificationReference string                 `protobuf:"bytes,4,opt,name=ClientVerificationReference,proto3" json:"ClientVerificationReference,omitempty"`
 	unknownFields               protoimpl.UnknownFields
 	sizeCache                   protoimpl.SizeCache
 }
@@ -400,10 +400,10 @@ const file_pkg_model_visa_grpc_v1_visa_proto_rawDesc = "" +
 	"\n" +
 	"!pkg/model/visa/grpc/v1/visa.proto\x12\x04visa\x1a#pkg/xErrors/grpc/error/gError.proto\"\xde\x01\n" +
 	"\rVerifyRequest\x12\"\n" +
-	"\fpayoutMethod\x18\x01 \x01(\tR\fpayoutMethod\x129\n" +
+	"\fPayoutMethod\x18\x01 \x01(\tR\fPayoutMethod\x129\n" +
 	"\x0fRecipientDetail\x18\x02 \x01(\v2\x0f.visa.RecipientR\x0fRecipientDetail\x12,\n" +
-	"\x11initiatingPartyId\x18\x03 \x01(\tR\x11initiatingPartyId\x12@\n" +
-	"\x1bclientVerificationReference\x18\x04 \x01(\tR\x1bclientVerificationReference\"\xad\x01\n" +
+	"\x11InitiatingPartyId\x18\x03 \x01(\tR\x11InitiatingPartyId\x12@\n" +
+	"\x1bClientVerificationReference\x18\x04 \x01(\tR\x1bClientVerificationReference\"\xad\x01\n" +
 	"\x0eVerifyResponse\x12\x0e\n" +
 	"\x02Id\x18\x01 \x01(\tR\x02Id\x12\x12\n" +
 	"\x04Code\x18\x02 \x01(\tR\x04Code\x12\x1c\n" +
