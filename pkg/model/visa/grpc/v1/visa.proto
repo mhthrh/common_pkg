@@ -9,7 +9,7 @@ option go_package = "github.com/mhthrh/common_pkg/pkg/model/visa/grpc/v1/visa";
 
 
 service VisaService{
-  rpc  Verify(VerifyResponse) returns (VerifyResponse){}
+  rpc  Verify(VerifyResponse) returns (VerifyRequest){}
 }
 
 message VerifyRequest{
