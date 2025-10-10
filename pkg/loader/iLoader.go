@@ -13,4 +13,5 @@ type IConfig interface {
 	GetMongo() (Mongo, *xErrors.Error)
 	GetSecrets() ([]Secret, *xErrors.Error)
 	GetGrpcs() ([]Grpc, *xErrors.Error)
+	GetVisa() (Visa, *xErrors.Error)
 }

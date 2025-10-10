@@ -36,5 +36,18 @@
     "readTimeOut": 60,
     "writeTimeOut": 60,
     "idleTimeOut": 180
+  },
+  "visa": {
+    "url": "https://sandbox.api.visa.com",
+    "user": "6H7KTBXMLDLLT9BMFMPW21LeyKcEWUmhAEU5lNeb7mn3UCU1E",
+    "pass": "4G6i6qyp862C1LGAYQzgtjNOKjBfJ0",
+    "AcquiringBin": "408999",
+    "clientCertificateFile": "config/certs/cert.pem",
+    "clientCertificateKeyFile": "config/certs/privateKey-f56efe3f-e214-4653-81ed-6c789bab80c5.pem",
+    "caCertificateFile": "config/certs/client_cert_321f7a2c-74cc-4fca-8f3d-3a3d52bacb24.pem",
+    "mleClientPrivateKeyPath": "config/certs/privateKey-321f7a2c-74cc-4fca-8f3d-3a3d52bacb24.pem",
+    "mleServerPublicCertificatePath": "config/certs/server_cert_321f7a2c-74cc-4fca-8f3d-3a3d52bacb24.pem",
+    "keyId": "321f7a2c-74cc-4fca-8f3d-3a3d52bacb24"
   }
 }
+

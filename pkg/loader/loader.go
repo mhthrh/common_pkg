@@ -4,6 +4,9 @@ import (
 	"encoding/json"
 	errs "errors"
 	"fmt"
+	"log"
+	"sync"
+
 	. "github.com/mhthrh/common_pkg/pkg/model/config"
 	"github.com/mhthrh/common_pkg/pkg/xErrors"
 	cryptx "github.com/mhthrh/common_pkg/util/cryptox"
@@ -11,8 +14,6 @@ import (
 	"github.com/mhthrh/common_pkg/util/file/text"
 	"github.com/mhthrh/common_pkg/util/xStruct"
 	"github.com/pkg/errors"
-	"log"
-	"sync"
 )
 
 const (
@@ -201,6 +202,19 @@ func (l Local) GetRootAdmin() (AdminUser, *xErrors.Error) {
 	return admin, nil
 }
 
+func (l Local) GetVisa() (Visa, *xErrors.Error) {
+	c, ok := mapConfig.Load(key)
+	if !ok {
+		return Visa{}, xErrors.FailedResource(nil, nil)
+	}
+	config := c.(*Config)
+	if xStruct.IsStructEmpty(config.Admin) {
+		return Visa{}, xErrors.FailedResource(errors.New("some Visa fields are empty"), nil)
+	}
+
+	return config.Visa, nil
+}
+
 func (r Remote) Read() *xErrors.Error {
 	//TODO implement me
 	panic("implement me")
@@ -230,6 +244,10 @@ func (r Remote) GetSecrets() ([]Secret, *xErrors.Error) {
 	panic("implement me")
 }
 func (r Remote) GetGrpcs() ([]Grpc, *xErrors.Error) {
+	//TODO implement me
+	panic("implement me")
+}
+func (l Remote) GetVisa() (Visa, *xErrors.Error) {
 	//TODO implement me
 	panic("implement me")
 }
