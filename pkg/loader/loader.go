@@ -214,6 +214,18 @@ func (l Local) GetVisa() (Visa, *xErrors.Error) {
 
 	return config.Visa, nil
 }
+func (l Local) GetSolace() (Solace, *xErrors.Error) {
+	c, ok := mapConfig.Load(key)
+	if !ok {
+		return Solace{}, xErrors.FailedResource(nil, nil)
+	}
+	config := c.(*Config)
+	if xStruct.IsStructEmpty(config.Solace) {
+		return Solace{}, xErrors.FailedResource(errors.New("some Solace fields are empty"), nil)
+	}
+
+	return config.Solace, nil
+}
 
 func (r Remote) Read() *xErrors.Error {
 	//TODO implement me
@@ -248,6 +260,10 @@ func (r Remote) GetGrpcs() ([]Grpc, *xErrors.Error) {
 	panic("implement me")
 }
 func (l Remote) GetVisa() (Visa, *xErrors.Error) {
+	//TODO implement me
+	panic("implement me")
+}
+func (l Remote) GetSolace() (Visa, *xErrors.Error) {
 	//TODO implement me
 	panic("implement me")
 }

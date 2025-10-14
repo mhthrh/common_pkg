@@ -17,6 +17,7 @@ type Config struct {
 	Host     Server         `json:"server"`
 	GRPCs    []Grpc         `json:"grpc"`
 	Visa     Visa           `json:"visa"`
+	Solace   Solace         `json:"solace"`
 }
 
 type Server struct {
