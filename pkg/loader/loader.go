@@ -263,7 +263,7 @@ func (l Remote) GetVisa() (Visa, *xErrors.Error) {
 	//TODO implement me
 	panic("implement me")
 }
-func (l Remote) GetSolace() (Visa, *xErrors.Error) {
+func (l Remote) GetSolace() (Solace, *xErrors.Error) {
 	//TODO implement me
 	panic("implement me")
 }
