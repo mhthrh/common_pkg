@@ -35,4 +35,5 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250218202821-56aae31c358a // indirect
 	gopkg.in/square/go-jose.v2 v2.6.0 // indirect
 	howett.net/plist v0.0.0-20181124034731-591f970eefbb // indirect
+	solace.dev/go/messaging v1.10.0 // indirect
 )

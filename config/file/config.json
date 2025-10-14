@@ -48,6 +48,20 @@
     "mleClientPrivateKeyPath": "config/certs/privateKey-321f7a2c-74cc-4fca-8f3d-3a3d52bacb24.pem",
     "mleServerPublicCertificatePath": "config/certs/server_cert_321f7a2c-74cc-4fca-8f3d-3a3d52bacb24.pem",
     "keyId": "321f7a2c-74cc-4fca-8f3d-3a3d52bacb24"
+  },
+  "solace": {
+    "hosts": [{
+      "schema": "tcp",
+      "host": "localhost",
+      "port": 55555
+    },{
+      "schema": "tcp",
+      "host": "localhost",
+      "port": 55554
+    }],
+    "vpn": "default",
+    "user": "admin",
+    "pass": "S3ring@123"
   }
 }
 

@@ -69,6 +69,18 @@ type Visa struct {
 	KeyId                          string `json:"keyId"`
 }
 
+type Solace struct {
+	Hosts []Host `json:"hosts"`
+	VPN   string `json:"vpn"`
+	User  string `json:"user"`
+	Pass  string `json:"pass"`
+}
+type Host struct {
+	Schema string `json:"schema"`
+	Host   string `json:"host"`
+	Port   int    `json:"port"`
+}
+
 type SSLMode string
 
 const (
