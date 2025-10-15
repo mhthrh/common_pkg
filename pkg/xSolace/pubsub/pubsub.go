@@ -155,8 +155,9 @@ func (s *SolacePubSub) Listen(ctx context.Context, p *xSolace.Pipe) {
 	})
 	fmt.Println("Persistent Receiver running? ", regErr)
 
-	<-ctx.Done()
-
-	fmt.Printf("\n Bound to queue: %s\n", queueName)
+	select {}
+	//<-ctx.Done()
+	//
+	//fmt.Printf("\n Bound to queue: %s\n", queueName)
 
 }
