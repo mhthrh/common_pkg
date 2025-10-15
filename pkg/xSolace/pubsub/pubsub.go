@@ -141,7 +141,7 @@ func (s *SolacePubSub) Listen(ctx context.Context, p *xSolace.Pipe) {
 	fmt.Println("Persistent Receiver running? ", persistentReceiver.IsRunning())
 
 	// Register Message callback handler to the Message Receiver
-	if regErr := persistentReceiver.ReceiveAsync(func(inboundMessage message.InboundMessage) {
+	regErr := persistentReceiver.ReceiveAsync(func(inboundMessage message.InboundMessage) {
 		var messageBody string
 
 		if payload, ok := inboundMessage.GetPayloadAsString(); ok {
@@ -152,9 +152,11 @@ func (s *SolacePubSub) Listen(ctx context.Context, p *xSolace.Pipe) {
 
 		fmt.Printf("Received Message Body %s \n", messageBody)
 		// fmt.Printf("Message Dump %s \n", message)
-	}); regErr != nil {
-		panic(regErr)
-	}
+	})
+	fmt.Println("Persistent Receiver running? ", regErr)
+
+	<-ctx.Done()
+
 	fmt.Printf("\n Bound to queue: %s\n", queueName)
 
 }
