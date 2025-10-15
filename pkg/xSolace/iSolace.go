@@ -3,12 +3,13 @@ package xSolace
 import "context"
 
 type Pipe struct {
-	Topic      string
-	MsgOut     chan string
-	MsgIn      chan string
-	ReceiptOut chan any
-	Err        chan error
-	Properties map[string]interface{}
+	TopicGet     string
+	TopicPublish string
+	MsgOut       chan string
+	MsgIn        chan string
+	ReceiptOut   chan any
+	Err          chan error
+	Properties   map[string]interface{}
 }
 
 type Service interface {
