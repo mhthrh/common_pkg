@@ -5,15 +5,22 @@ import (
 	"context"
 	"crypto/tls"
 	"crypto/x509"
-	v "github.com/mhthrh/common_pkg/pkg/model/config"
 	"net/http"
 	"os"
+
+	v "github.com/mhthrh/common_pkg/pkg/model/config"
 )
 
 const (
 	url          = ""
 	AcquiringBin = ""
 )
+
+type Service interface {
+	Verify(context.Context, string, string) (*http.Response, error)
+	Validate(context.Context, string, string) (*http.Response, error)
+	Payout(context.Context, string, string) (*http.Response, error)
+}
 
 type Request struct {
 	transport *http.Transport
@@ -47,7 +54,53 @@ func New(config v.Visa) (*Request, error) {
 }
 
 func (r *Request) Verify(ctx context.Context, body, method string) (*http.Response, error) {
-	path := ""
+	path := "/visadirect-connect/v1/accounts/verify"
+	var err error
+	client := &http.Client{Transport: r.transport}
+
+	apiUrl := r.config.Url + path
+	var request *http.Request = nil
+	if body != "" {
+		request, err = http.NewRequest(method, apiUrl, bytes.NewBuffer([]byte(body)))
+	} else {
+		request, err = http.NewRequest(method, apiUrl, nil)
+	}
+
+	if err != nil {
+		return nil, err
+	}
+	request.SetBasicAuth(r.config.User, r.config.Pass)
+	request.Header.Set("keyId", r.config.KeyId)
+	request.Header.Set("Accept", "application/json")
+	request.Header.Set("Content-Type", "application/json")
+
+	return client.Do(request)
+}
+func (r *Request) Validate(ctx context.Context, body, method string) (*http.Response, error) {
+	path := "/visadirect-connect/v1/accounts/payout/validate"
+	var err error
+	client := &http.Client{Transport: r.transport}
+
+	apiUrl := r.config.Url + path
+	var request *http.Request = nil
+	if body != "" {
+		request, err = http.NewRequest(method, apiUrl, bytes.NewBuffer([]byte(body)))
+	} else {
+		request, err = http.NewRequest(method, apiUrl, nil)
+	}
+
+	if err != nil {
+		return nil, err
+	}
+	request.SetBasicAuth(r.config.User, r.config.Pass)
+	request.Header.Set("keyId", r.config.KeyId)
+	request.Header.Set("Accept", "application/json")
+	request.Header.Set("Content-Type", "application/json")
+
+	return client.Do(request)
+}
+func (r *Request) Payout(ctx context.Context, body, method string) (*http.Response, error) {
+	path := "/visadirect-connect/v1/accounts/payout"
 	var err error
 	client := &http.Client{Transport: r.transport}
 
