@@ -6,7 +6,6 @@ type Pipe struct {
 	TopicGet     string
 	TopicPublish string
 	MsgOut       chan string
-	MsgIn        chan string
 	ReceiptOut   chan any
 	Err          chan error
 	Properties   map[string]interface{}

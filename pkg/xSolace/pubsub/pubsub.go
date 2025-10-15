@@ -2,6 +2,7 @@ package pubsub
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
 	"os/signal"
@@ -54,7 +55,7 @@ func New(cfg cfg.Solace) (*SolacePubSub, error) {
 
 }
 
-func (s *SolacePubSub) Publish(ctx context.Context, p *xSolace.Pipe) {
+func (s *SolacePubSub) Publish(ctx context.Context, p *xSolace.Pipe, msg string) error {
 	persistentPublisher, builderErr := s.messagingService.CreatePersistentMessagePublisherBuilder().Build()
 	if builderErr != nil {
 		panic(builderErr)
@@ -88,25 +89,41 @@ func (s *SolacePubSub) Publish(ctx context.Context, p *xSolace.Pipe) {
 	messageBuilder := s.messagingService.MessageBuilder().
 		WithProperty("application", "samples").
 		WithProperty("language", "go")
-	go func() {
-		for persistentPublisher.IsReady() {
-			select {
-			case <-ctx.Done():
-				return
-			case msg := <-p.MsgIn:
-				message, err := messageBuilder.BuildWithStringPayload(msg)
-				if err != nil {
-					panic(err)
-				}
 
-				publishErr := persistentPublisher.Publish(message, topic, nil, nil)
-
-				if publishErr != nil {
-					panic(publishErr)
-				}
-			}
+	if persistentPublisher.IsReady() {
+		message, err := messageBuilder.BuildWithStringPayload(msg)
+		if err != nil {
+			panic(err)
 		}
-	}()
+
+		publishErr := persistentPublisher.Publish(message, topic, nil, nil)
+
+		if publishErr != nil {
+			panic(publishErr)
+		}
+		return nil
+	}
+	return errors.New("persistent Publisher did not start")
+
+	//go func() {
+	//	for persistentPublisher.IsReady() {
+	//		select {
+	//		case <-ctx.Done():
+	//			return
+	//		case msg := <-p.MsgIn:
+	//			message, err := messageBuilder.BuildWithStringPayload(msg)
+	//			if err != nil {
+	//				panic(err)
+	//			}
+	//
+	//			publishErr := persistentPublisher.Publish(message, topic, nil, nil)
+	//
+	//			if publishErr != nil {
+	//				panic(publishErr)
+	//			}
+	//		}
+	//	}
+	//}()
 
 }
 
