@@ -3,6 +3,8 @@ package pubsub
 import (
 	"context"
 	"fmt"
+	"os"
+	"os/signal"
 	"strings"
 
 	cfg "github.com/mhthrh/common_pkg/pkg/model/config"
@@ -141,7 +143,7 @@ func (s *SolacePubSub) Listen(ctx context.Context, p *xSolace.Pipe) {
 	fmt.Println("Persistent Receiver running? ", persistentReceiver.IsRunning())
 
 	// Register Message callback handler to the Message Receiver
-	regErr := persistentReceiver.ReceiveAsync(func(inboundMessage message.InboundMessage) {
+	if regErr := persistentReceiver.ReceiveAsync(func(inboundMessage message.InboundMessage) {
 		var messageBody string
 
 		if payload, ok := inboundMessage.GetPayloadAsString(); ok {
@@ -152,10 +154,16 @@ func (s *SolacePubSub) Listen(ctx context.Context, p *xSolace.Pipe) {
 
 		fmt.Printf("Received Message Body %s \n", messageBody)
 		// fmt.Printf("Message Dump %s \n", message)
-	})
-	fmt.Println("Persistent Receiver running? ", regErr)
+	}); regErr != nil {
+		panic(regErr)
+	}
+	fmt.Printf("\n Bound to queue: %s\n", queueName)
 
-	select {}
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt)
+
+	// Block until a signal is received.
+	<-c
 	//<-ctx.Done()
 	//
 	//fmt.Printf("\n Bound to queue: %s\n", queueName)
