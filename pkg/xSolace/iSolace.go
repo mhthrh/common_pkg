@@ -1,11 +1,17 @@
 package xSolace
 
-type Message struct {
-	Subscription string
-	Properties   map[string]interface{}
+import "context"
+
+type Pipe struct {
+	Topic      string
+	MsgOut     chan string
+	MsgIn      chan string
+	ReceiptOut chan any
+	Err        chan error
+	Properties map[string]interface{}
 }
 
 type Service interface {
-	Publish(msg string, m Message) error
-	Listen(fnc func(any)) error
+	Publish(ctx context.Context, m *Pipe)
+	Listen(ctx context.Context, m *Pipe)
 }
