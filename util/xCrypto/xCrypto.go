@@ -11,15 +11,15 @@ import (
 	"strings"
 	"time"
 
-	"golang.org/x/tools/go/loader"
+	l "github.com/mhthrh/common_pkg/pkg/model/config"
 	"gopkg.in/square/go-jose.v2"
 )
 
 type Crypto struct {
-	cnfg *loader.Config
+	cnfg *l.Config
 }
 
-func New(c *loader.Config) *Crypto {
+func New(c *l.Config) *Crypto {
 	return &Crypto{c}
 }
 
