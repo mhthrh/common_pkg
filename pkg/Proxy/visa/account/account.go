@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	url          = ""
+	url          = " "
 	AcquiringBin = ""
 )
 
