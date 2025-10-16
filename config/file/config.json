@@ -72,18 +72,35 @@
     "keyId": "321f7a2c-74cc-4fca-8f3d-3a3d52bacb24"
   },
   "solace": {
-    "hosts": [{
-      "schema": "tcp",
-      "host": "localhost",
-      "port": 55555
-    },{
-      "schema": "tcp",
-      "host": "localhost",
-      "port": 55554
-    }],
+    "hosts": [
+      {
+        "schema": "tcp",
+        "host": "localhost",
+        "port": 55555
+      },
+      {
+        "schema": "tcp",
+        "host": "localhost",
+        "port": 55554
+      }
+    ],
     "vpn": "default",
     "user": "admin",
     "pass": "S3ring@123"
-  }
+  },
+  "queues": [
+    {
+      "key": "payoutIn",
+      "value": "telus/visa/payout/in"
+    },
+    {
+      "key": "payoutValidationResponse",
+      "value": "telus/visa/payout/in"
+    },
+    {
+      "key": "payoutResponse",
+      "value": "telus/visa/payout/in"
+    }
+  ]
 }
 

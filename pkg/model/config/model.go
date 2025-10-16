@@ -18,6 +18,7 @@ type Config struct {
 	GRPCs    []Grpc         `json:"grpc"`
 	Visa     Visa           `json:"visa"`
 	Solace   Solace         `json:"solace"`
+	Queue    []Queues       `json:"queues"`
 }
 
 type Server struct {
@@ -68,6 +69,11 @@ type Visa struct {
 	MleClientPrivateKeyPath        string `json:"mleClientPrivateKeyPath"`
 	MleServerPublicCertificatePath string `json:"mleServerPublicCertificatePath"`
 	KeyId                          string `json:"keyId"`
+}
+
+type Queues struct {
+	Key   string `json:"key"`
+	Value string `json:"value"`
 }
 
 type Solace struct {

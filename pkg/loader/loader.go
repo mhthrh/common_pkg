@@ -226,6 +226,24 @@ func (l Local) GetSolace() (Solace, *xErrors.Error) {
 
 	return config.Solace, nil
 }
+func (l Local) GetQueues() (map[string]string, *xErrors.Error) {
+	c, ok := mapConfig.Load(key)
+	if !ok {
+		return nil, xErrors.FailedResource(nil, nil)
+	}
+	config := c.(*Config)
+	if xStruct.IsStructEmpty(config.Solace) {
+		return nil, xErrors.FailedResource(errors.New("some Solace fields are empty"), nil)
+	}
+	dic := make(map[string]string)
+	for _, v := range config.Queue {
+		dic[v.Key] = v.Value
+	}
+	if len(dic) == 0 {
+		return nil, xErrors.FailedResource(errors.New("solace Queues fields are empty"), nil)
+	}
+	return dic, nil
+}
 
 func (r Remote) Read() *xErrors.Error {
 	//TODO implement me
@@ -265,5 +283,9 @@ func (l Remote) GetVisa() (Visa, *xErrors.Error) {
 }
 func (l Remote) GetSolace() (Solace, *xErrors.Error) {
 	//TODO implement me
+	panic("implement me")
+}
+
+func (l Remote) GetQueues() (map[string]string, *xErrors.Error) {
 	panic("implement me")
 }
