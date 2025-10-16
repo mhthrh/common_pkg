@@ -10,6 +10,7 @@ type ValidateRequest struct {
 }
 
 type ValidateResponse struct {
-	ValidationResultCode string `json:"validationResultCode"`
-	ExpectedPostingDate  string `json:"expectedPostingDate"`
+	ValidationResultCode string             `json:"validationResultCode"`
+	ExpectedPostingDate  string             `json:"expectedPostingDate"`
+	Error                visa.ErrorResponse `json:"errorResponse"`
 }

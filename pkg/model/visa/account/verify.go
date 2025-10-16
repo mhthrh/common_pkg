@@ -14,4 +14,5 @@ type VerifyResponse struct {
 	VerificationStatus          string                  `json:"verificationStatus"`
 	ClientVerificationReference string                  `json:"clientVerificationReference"`
 	AccountValidity             visa.VerificationDetail `json:"accountVerificationDetail"`
+	Error                       visa.ErrorResponse      `json:"errorResponse"`
 }
