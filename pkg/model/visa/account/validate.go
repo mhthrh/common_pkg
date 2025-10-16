@@ -87,3 +87,24 @@ type ValidateR struct {
 		DateOfBirth         string `json:"dateOfBirth"`
 	} `json:"senderDetail"`
 }
+
+type Response200 struct {
+	VerificationId    string `json:"verificationId"`
+	ValidationDetails []struct {
+	} `json:"validationDetails"`
+	ExpectedPostingDate         string `json:"expectedPostingDate"`
+	ValidationResultCode        string `json:"validationResultCode"`
+	ClientVerificationReference string `json:"clientVerificationReference"`
+}
+type ResponseErr struct {
+	ErrorResponse struct {
+		Reason  string `json:"reason"`
+		Status  int    `json:"status"`
+		Details []struct {
+			Code     string `json:"code"`
+			Message  string `json:"message"`
+			Location string `json:"location"`
+		} `json:"details"`
+		Message string `json:"message"`
+	} `json:"errorResponse"`
+}
