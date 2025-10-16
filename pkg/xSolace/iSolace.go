@@ -3,7 +3,7 @@ package xSolace
 import "context"
 
 type Pipe struct {
-	topic      map[string]string
+	Topic      map[string]string
 	MsgOut     chan string
 	ReceiptOut chan any
 	Err        chan error

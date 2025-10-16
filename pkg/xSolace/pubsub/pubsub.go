@@ -55,7 +55,8 @@ func New(cfg cfg.Solace) (*SolacePubSub, error) {
 
 }
 
-func (s *SolacePubSub) Publish(ctx context.Context, p *xSolace.Pipe, msg string) error {
+func (s *SolacePubSub) Publish(ctx context.Context, p *xSolace.Pipe, msg, topicName string) error {
+
 	persistentPublisher, builderErr := s.messagingService.CreatePersistentMessagePublisherBuilder().Build()
 	if builderErr != nil {
 		panic(builderErr)
@@ -84,7 +85,7 @@ func (s *SolacePubSub) Publish(ctx context.Context, p *xSolace.Pipe, msg string)
 
 	fmt.Println("Persistent Publisher running? ", persistentPublisher.IsRunning())
 
-	topic := resource.TopicOf(p.TopicPublish)
+	topic := resource.TopicOf(topicName)
 	fmt.Printf("Publishing on: %s, please ensure queue has matching subscription.\n", topic.GetName())
 	messageBuilder := s.messagingService.MessageBuilder().
 		WithProperty("application", "samples").
@@ -127,12 +128,12 @@ func (s *SolacePubSub) Publish(ctx context.Context, p *xSolace.Pipe, msg string)
 
 }
 
-func (s *SolacePubSub) Listen(ctx context.Context, p *xSolace.Pipe) {
+func (s *SolacePubSub) Listen(ctx context.Context, p *xSolace.Pipe, topicName string) {
 	// queueName := "durable-queue"
 	// durableExclusiveQueue := resource.QueueDurableExclusive("durable-queue")
 	queueName := "nondurable-queue"
 	nonDurableExclusiveQueue := resource.QueueNonDurableExclusive("nondurable-queue")
-	topic := resource.TopicSubscriptionOf(p.TopicGet)
+	topic := resource.TopicSubscriptionOf(topicName)
 
 	// Build a Gauranteed message receiver and bind to the given queue
 	strategy := config.MissingResourcesCreationStrategy("CREATE_ON_START")
