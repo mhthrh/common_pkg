@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+
+package visa;
+
+import "pkg/xErrors/grpc/error/gError.proto";
+
+option go_package = "github.com/mhthrh/common_pkg/pkg/model/visa/grpc/v1/visa";
+
+
+service VisaService{
+  rpc  Verify(VerifyRequest) returns (VerifyResponse){}
+}
+
+message VerifyRequest{
+  string PayoutMethod = 1;
+  Recipient RecipientDetail = 2;
+  string InitiatingPartyId = 3;
+  string ClientVerRef=4;
+}
+
+message VerifyResponse{
+  string Id = 1;
+  string Code = 2;
+  string Reference = 3;
+  AccountVerification AcVerify = 4;
+  error.Error Error = 5;
+}
+
+message AccountVerification{
+  string AccountIdentifierMatch = 1;
+  string NameMatch = 2;
+  string BankAccountName = 3;
+}
+
+message BankR{
+  string BankName = 1;
+  string AccountName = 2;
+  string AccountNumber = 3;
+  string AccountNumberType = 4;
+  string CountryCode = 5;
+  string BankCode = 6;
+  string BankCodeType = 7;
+  string CurrencyCode = 8;
+}
+
+message Recipient{
+  BankR Bank = 1;
+  string Type = 2;
+  string LastName = 3;
+  string FirstName = 4;
+
+}

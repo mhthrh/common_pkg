@@ -30,6 +30,7 @@ func NewPool(address string, size int) (*GrpcPool, error) {
 		if err != nil {
 			return nil, fmt.Errorf("dial failed: %v", err)
 		}
+		conn.Connect()
 		conns[i] = conn
 	}
 	result := pool.GRPC{

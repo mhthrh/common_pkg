@@ -36,5 +36,71 @@
     "readTimeOut": 60,
     "writeTimeOut": 60,
     "idleTimeOut": 180
-  }
+  },
+  "grpc": [
+    {
+      "srv": "ApiGateway",
+      "host": "0.0.0.0",
+      "port": 8585
+    },
+    {
+      "srv": "notification",
+      "host": "0.0.0.0",
+      "port": 8586
+    }
+  ],
+  "hydra": {
+    "adminUrl": "http://localhost:4445",
+    "publicUrl": "http://localhost/api/v1/auth",
+    "clientID": "981649f0-e2a8-4594-a887-96d6fa4f3929",
+    "clientSecret": "lI9mLM4MEz6h-_~unDtgEwyWy3",
+    "oauth2AuthUrl": "http://localhost/api/v1/auth/oauth2/auth",
+    "oauth2TokenUrl": "http://localhost/api/v1/auth/oauth2/token",
+    "redirectURL": "http://localhost/callback",
+    "loginURL": "http://localhost:8000/login"
+  },
+  "visa": {
+    "url": "https://sandbox.api.visa.com",
+    "user": "6H7KTBXMLDLLT9BMFMPW21LeyKcEWUmhAEU5lNeb7mn3UCU1E",
+    "pass": "4G6i6qyp862C1LGAYQzgtjNOKjBfJ0",
+    "AcquiringBin": "408999",
+    "clientCertificateFile": "config/certs/cert.pem",
+    "clientCertificateKeyFile": "config/certs/privateKey-f56efe3f-e214-4653-81ed-6c789bab80c5.pem",
+    "caCertificateFile": "config/certs/client_cert_321f7a2c-74cc-4fca-8f3d-3a3d52bacb24.pem",
+    "mleClientPrivateKeyPath": "config/certs/privateKey-321f7a2c-74cc-4fca-8f3d-3a3d52bacb24.pem",
+    "mleServerPublicCertificatePath": "config/certs/server_cert_321f7a2c-74cc-4fca-8f3d-3a3d52bacb24.pem",
+    "keyId": "321f7a2c-74cc-4fca-8f3d-3a3d52bacb24"
+  },
+  "solace": {
+    "hosts": [
+      {
+        "schema": "tcp",
+        "host": "localhost",
+        "port": 55555
+      },
+      {
+        "schema": "tcp",
+        "host": "localhost",
+        "port": 55554
+      }
+    ],
+    "vpn": "default",
+    "user": "admin",
+    "pass": "S3ring@123"
+  },
+  "queues": [
+    {
+      "key": "payoutIn",
+      "value": "telus/visa/payout/in"
+    },
+    {
+      "key": "payoutValidationResponse",
+      "value": "telus/visa/payout/validate"
+    },
+    {
+      "key": "payoutResponse",
+      "value": "telus/visa/payout/transaction"
+    }
+  ]
 }
+

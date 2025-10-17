@@ -9,42 +9,69 @@ var (
 	commands map[string]Command
 )
 
+type Parameter struct {
+	ID         int
+	IsOptional bool
+}
 type Command struct {
-	id          int
-	optional    []string
-	required    []string
-	fullCommand []string
+	ID          int
+	FullCommand string
+	Parameters  map[string]Parameter
+	action      func(command *Command) error
 }
 
 func init() {
+
 	commands = make(map[string]Command)
 
 	commands["secret"] = Command{
-		id:       1,
-		optional: []string{"--separate"},
-		required: []string{"set", "get", "-value="},
-	}
-
-	commands["crypto"] = Command{
-		id:       1,
-		optional: []string{"--hotkey", "--stored"},
-		required: []string{"enc", "dec", "-path="},
+		ID:          10001,
+		FullCommand: "",
+		action:      action,
+		Parameters: map[string]Parameter{
+			"--separated": {
+				ID:         20001,
+				IsOptional: true,
+			}, "--central": {
+				ID:         20002,
+				IsOptional: true,
+			}, "-key": {
+				ID:         20003,
+				IsOptional: false,
+			},
+		},
 	}
 }
+func find(cmd, key string) (string, error) {
+	parts := strings.Split(cmd, key)
+	if len(parts) > 1 {
+		return strings.Fields(parts[1])[0], nil
+	}
+	return "", errors.New("key not found")
+}
+func HasAnyKey(m map[string]Parameter, keys ...string) (bool, string) {
+	for _, k := range keys {
+		if _, ok := m[k]; ok {
+			return true, k
+		}
+	}
+	return false, ""
+}
+func action(c *Command) error {
 
-func assign(input string) error {
-	flds := make([]string, 0)
-	for _, v := range strings.Fields(strings.ToLower(input)) {
-		flds = append(flds, strings.Trim(v, " "))
+	cmd, err := find(c.FullCommand, "-key")
+	if err != nil {
+		return err
 	}
-	cmd, ok := commands[flds[0]]
-	if !ok {
-		return errors.New("was kiri")
+	exist, option := HasAnyKey(c.Parameters, "--separated", "--central")
+	if !exist {
+		return errors.New("option not found")
 	}
-	cmd.fullCommand = flds
+	if option == "" {
+
+	}
+	if cmd == "" {
+
+	}
 	return nil
-}
-
-func validation(c Command) {
-
 }

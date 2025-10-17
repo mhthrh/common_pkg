@@ -16,6 +16,9 @@ type Config struct {
 	Admin    AdminUser      `json:"admin"`
 	Host     Server         `json:"server"`
 	GRPCs    []Grpc         `json:"grpc"`
+	Visa     Visa           `json:"visa"`
+	Solace   Solace         `json:"solace"`
+	Queue    []Queues       `json:"queues"`
 }
 
 type Server struct {
@@ -53,6 +56,36 @@ type Grpc struct {
 	Host  string `json:"host"`
 	Port  int    `json:"port"`
 	Count int    `json:"poolSize"`
+}
+
+type Visa struct {
+	Url                            string `json:"url"`
+	User                           string `json:"user"`
+	Pass                           string `json:"pass"`
+	AcquiringBin                   string `json:"AcquiringBin"`
+	ClientCertificateFile          string `json:"clientCertificateFile"`
+	ClientCertificateKeyFile       string `json:"clientCertificateKeyFile"`
+	CaCertificateFile              string `json:"caCertificateFile"`
+	MleClientPrivateKeyPath        string `json:"mleClientPrivateKeyPath"`
+	MleServerPublicCertificatePath string `json:"mleServerPublicCertificatePath"`
+	KeyId                          string `json:"keyId"`
+}
+
+type Queues struct {
+	Key   string `json:"key"`
+	Value string `json:"value"`
+}
+
+type Solace struct {
+	Hosts []Host `json:"hosts"`
+	VPN   string `json:"vpn"`
+	User  string `json:"user"`
+	Pass  string `json:"pass"`
+}
+type Host struct {
+	Schema string `json:"schema"`
+	Host   string `json:"host"`
+	Port   int    `json:"port"`
 }
 
 type SSLMode string
