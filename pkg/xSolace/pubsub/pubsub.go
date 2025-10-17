@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
 	"os"
 	"os/signal"
 	"strings"
@@ -47,7 +48,7 @@ func New(cfg cfg.Solace) (*SolacePubSub, error) {
 	if messagingService.Connect() != nil {
 		return nil, err
 	}
-	fmt.Println("Connected to the broker? ", messagingService.IsConnected())
+	log.Println("Connected to the broker? ", messagingService.IsConnected())
 
 	return &SolacePubSub{
 		messagingService: messagingService,
@@ -62,18 +63,10 @@ func (s *SolacePubSub) Publish(ctx context.Context, p *xSolace.Pipe, msg, topicN
 		panic(builderErr)
 	}
 	persistentPublisher.SetMessagePublishReceiptListener(func(receipt solace.PublishReceipt) {
-		fmt.Println("Received a Publish Receipt from the broker")
 		p.ReceiptOut <- "ok123"
-		// fmt.Println("IsPersisted: ", receipt.IsPersisted())
-		// fmt.Println("Message : ", receipt.GetMessage())
+
 		if receipt.GetError() != nil {
-			fmt.Println("Gauranteed Message is NOT persisted on the broker! Received NAK")
-			fmt.Println("Error is: ", receipt.GetError())
-			// probably want to do something here.  some error handling possibilities:
-			//  - send the message again
-			//  - send it somewhere else (error handling queue?)
-			//  - log and continue
-			//  - pause and retry (backoff) - maybe set a flag to slow down the publisher
+
 		}
 
 	})
@@ -83,10 +76,10 @@ func (s *SolacePubSub) Publish(ctx context.Context, p *xSolace.Pipe, msg, topicN
 		panic(startErr)
 	}
 
-	fmt.Println("Persistent Publisher running? ", persistentPublisher.IsRunning())
+	log.Println("Persistent Publisher running? ", persistentPublisher.IsRunning())
 
 	topic := resource.TopicOf(topicName)
-	fmt.Printf("Publishing on: %s, please ensure queue has matching subscription.\n", topic.GetName())
+	log.Printf("Publishing on: %s, please ensure queue has matching subscription.\n", topic.GetName())
 	messageBuilder := s.messagingService.MessageBuilder().
 		WithProperty("application", "samples").
 		WithProperty("language", "go")
@@ -106,63 +99,34 @@ func (s *SolacePubSub) Publish(ctx context.Context, p *xSolace.Pipe, msg, topicN
 	}
 	return errors.New("persistent Publisher did not start")
 
-	//go func() {
-	//	for persistentPublisher.IsReady() {
-	//		select {
-	//		case <-ctx.Done():
-	//			return
-	//		case msg := <-p.MsgIn:
-	//			message, err := messageBuilder.BuildWithStringPayload(msg)
-	//			if err != nil {
-	//				panic(err)
-	//			}
-	//
-	//			publishErr := persistentPublisher.Publish(message, topic, nil, nil)
-	//
-	//			if publishErr != nil {
-	//				panic(publishErr)
-	//			}
-	//		}
-	//	}
-	//}()
-
 }
 
 func (s *SolacePubSub) Listen(ctx context.Context, p *xSolace.Pipe, topicName string) {
-	// queueName := "durable-queue"
-	// durableExclusiveQueue := resource.QueueDurableExclusive("durable-queue")
+
 	queueName := "nondurable-queue"
 	nonDurableExclusiveQueue := resource.QueueNonDurableExclusive("nondurable-queue")
 	topic := resource.TopicSubscriptionOf(topicName)
 
-	// Build a Gauranteed message receiver and bind to the given queue
 	strategy := config.MissingResourcesCreationStrategy("CREATE_ON_START")
-	// Durable Queue
 	persistentReceiver, err := s.messagingService.CreatePersistentMessageReceiverBuilder().WithMessageAutoAcknowledgement().WithMissingResourcesCreationStrategy(strategy).WithSubscriptions(topic).Build(nonDurableExclusiveQueue)
 
 	if err != nil {
 		panic(err)
 	}
-	// Non-durable Queue
-	// persistentReceiver, err := messagingService.CreatePersistentMessageReceiverBuilder().WithMissingResourcesCreationStrategy(strategy).WithSubscriptions(topic).Build(nonDurableExclusiveQueue)
 
-	// Handling a panic from a non existing queue
 	defer func() {
 		if err := recover(); err != nil {
 			fmt.Printf("Make sure queue name '%s' exists on the broker.\nThe following error occurred when attempting to connect to create a Persistent Message Receiver:\n%s", queueName, err)
 		}
 	}()
 
-	// Start Persistent Message Receiver
 	if err := persistentReceiver.Start(); err != nil {
 		panic(err)
 	}
 
-	fmt.Println("Persistent Receiver running? ", persistentReceiver.IsRunning())
+	log.Println("Persistent Receiver running? ", persistentReceiver.IsRunning())
 
-	// Register Message callback handler to the Message Receiver
 	if regErr := persistentReceiver.ReceiveAsync(func(inboundMessage message.InboundMessage) {
-		var messageBody string
 
 		if payload, ok := inboundMessage.GetPayloadAsString(); ok {
 			p.MsgOut <- payload
@@ -170,20 +134,12 @@ func (s *SolacePubSub) Listen(ctx context.Context, p *xSolace.Pipe, topicName st
 			p.MsgOut <- string(payload)
 		}
 
-		fmt.Printf("Received Message Body %s \n", messageBody)
-		// fmt.Printf("Message Dump %s \n", message)
 	}); regErr != nil {
 		panic(regErr)
 	}
-	fmt.Printf("\n Bound to queue: %s\n", queueName)
 
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt)
 
-	// Block until a signal is received.
 	<-c
-	//<-ctx.Done()
-	//
-	//fmt.Printf("\n Bound to queue: %s\n", queueName)
-
 }

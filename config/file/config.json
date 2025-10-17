@@ -95,11 +95,11 @@
     },
     {
       "key": "payoutValidationResponse",
-      "value": "telus/visa/payout/in"
+      "value": "telus/visa/payout/validate"
     },
     {
       "key": "payoutResponse",
-      "value": "telus/visa/payout/in"
+      "value": "telus/visa/payout/transaction"
     }
   ]
 }
